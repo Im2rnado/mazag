@@ -1,0 +1,26 @@
+[
+    {
+        "id": "t1",
+        "name": "Dr. Sara Amin",
+        "specialization": "Clinical Psychologist",
+        "price": 600,
+        "rating": 4.8,
+        "bio": "CBT and adolescent therapy. Arabic + English."
+    },
+    {
+        "id": "t2",
+        "name": "Maged ElSayed",
+        "specialization": "Counsellor",
+        "price": 450,
+        "rating": 4.5,
+        "bio": "Stress management, emotional regulation."
+    },
+    {
+        "id": "t3",
+        "name": "Dr. Nour Hassan",
+        "specialization": "Family Therapist",
+        "price": 550,
+        "rating": 4.7,
+        "bio": "Family dynamics, relationship counseling."
+    }
+]

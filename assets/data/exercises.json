@@ -1,0 +1,30 @@
+[
+    {
+        "id": "e1",
+        "title": "4-4-8 Breathing",
+        "type": "breathing",
+        "durationMinutes": 3,
+        "description": "Breathe in for 4s, hold 4s, exhale 8s."
+    },
+    {
+        "id": "e2",
+        "title": "Journaling Prompt",
+        "type": "journaling",
+        "durationMinutes": 10,
+        "description": "Write for 10 minutes about what you are grateful for today."
+    },
+    {
+        "id": "e3",
+        "title": "Body Scan Meditation",
+        "type": "meditation",
+        "durationMinutes": 15,
+        "description": "Progressive relaxation focusing on each part of your body."
+    },
+    {
+        "id": "e4",
+        "title": "Box Breathing",
+        "type": "breathing",
+        "durationMinutes": 5,
+        "description": "4-4-4-4 breathing pattern for stress relief."
+    }
+]
