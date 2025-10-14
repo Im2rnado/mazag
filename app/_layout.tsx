@@ -62,7 +62,7 @@ function CustomTabBar() {
 
       {/* Main Tab Bar */}
       <View
-        className="bg-glassBg border border-glassBorder rounded-3xl mx-2 px-2 py-4"
+        className="bg-bgWhite border border-glassBorder rounded-3xl mx-2 px-2 py-4"
         style={{
           shadowColor: '#64B5F6',
           shadowOffset: { width: 0, height: 2 },
@@ -111,10 +111,10 @@ export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
 
   const [fontsLoaded, fontError] = useFonts({
-    'AvenirNext-Thin': require('../assets/fonts/AvenirNext-Thin.ttf'),
     'AvenirNext-Light': require('../assets/fonts/AvenirNext-Light.ttf'),
     'AvenirNext-Regular': require('../assets/fonts/AvenirNext-Regular.ttf'),
     'AvenirNext-Medium': require('../assets/fonts/AvenirNext-Medium.ttf'),
+    'AvenirNext-Demi': require('../assets/fonts/AvenirNext-Demi.ttf'),
   });
 
   // Disable font scaling globally

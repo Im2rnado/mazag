@@ -26,12 +26,12 @@ export default function AnimatedChromeOrb({
     // Single animation angle that drives all gradients (like CSS --angle)
     const [angle, setAngle] = useState(0);
 
-    // Default color scheme - matching SmoothUI pastel colors
+    // Default color scheme - vibrant blues
     const defaultColors = {
-        bg: '#F9FCFF',
-        c1: '#DDEEFF', // Pastel pink
-        c2: '#CBE7FF', // Pastel blue
-        c3: '#D8E1FF', // Pastel purple/lavender
+        bg: '#E3F2FD',
+        c1: '#4FC3F7', // Bright cyan
+        c2: '#2196F3', // Vibrant blue
+        c3: '#03A9F4', // Electric blue
     };
 
     const orbColors = { ...defaultColors, ...colors };
@@ -65,11 +65,11 @@ export default function AnimatedChromeOrb({
                 {
                     width: size,
                     height: size,
-                    shadowColor: '#64B5F6',
+                    shadowColor: '#2196F3',
                     shadowOffset: { width: 0, height: 3 },
-                    shadowOpacity: 0.9,
-                    shadowRadius: 18,
-                    elevation: 18,
+                    shadowOpacity: 0.95,
+                    shadowRadius: 20,
+                    elevation: 20,
                 }
             ]}
             pointerEvents="box-none"
@@ -218,7 +218,7 @@ export default function AnimatedChromeOrb({
                 <MaterialCommunityIcons
                     name={isActive ? "robot-happy" : "robot"}
                     size={size * 0.5}
-                    color="#E3F2FD"
+                    color="#FFFFFF"
                     style={styles.icon}
                 />
             </View>

@@ -2,6 +2,7 @@
   "expo": {
     "name": "Mazag",
     "slug": "mazag",
+    "scheme": "com.mazag.app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

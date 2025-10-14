@@ -12,48 +12,48 @@ module.exports = {
         extend: {
             fontFamily: {
                 'avenir': ['AvenirNext-Light'],
-                'avenir-medium': ['AvenirNext-Thin'],
-                'avenir-semibold': ['AvenirNext-Regular'],
-                'avenir-bold': ['AvenirNext-Medium'],
+                'avenir-medium': ['AvenirNext-Regular'],
+                'avenir-semibold': ['AvenirNext-Medium'],
+                'avenir-bold': ['AvenirNext-Demi'],
             },
             colors: {
-                // Primary Pastel Blues
-                iceBlue: '#E3F2FD',
-                skyBlue: '#BBDEFB',
-                powderBlue: '#90CAF9',
-                lightBlue: '#D6EAF8',
+                // Primary Vibrant Blues
+                iceBlue: '#B3E5FC',
+                skyBlue: '#81D4FA',
+                powderBlue: '#4FC3F7',
+                lightBlue: '#29B6F6',
 
-                // Text Colors
-                textStrong: '#2C5F7C',
-                textNormal: '#6C839A',
-                textLight: '#6C839A',
-                textBody: '#6C839A',
+                // Text Colors - More Vibrant
+                textStrong: '#1565C0',
+                textNormal: '#1976D2',
+                textLight: '#42A5F5',
+                textBody: '#64B5F6',
 
-                // Mood Colors (Pastels)
-                moodHappy: '#FFF9C4',      // Pastel yellow
-                moodJoyful: '#FFE0B2',     // Pastel orange
-                moodNeutral: '#E1BEE7',    // Pastel purple
-                moodSad: '#BBDEFB',        // Pastel blue
-                moodAngry: '#FFCDD2',      // Pastel red
+                // Mood Colors (More Vibrant)
+                moodHappy: '#FFF176',      // Bright yellow
+                moodJoyful: '#FFB74D',     // Bright orange
+                moodNeutral: '#CE93D8',    // Bright purple
+                moodSad: '#64B5F6',        // Bright blue
+                moodAngry: '#E57373',      // Bright red
 
-                // Accent Colors
-                primaryBlue: '#64B5F6',
-                accentBlue: '#42A5F5',
-                borderBlue: '#B3E5FC',
+                // Accent Colors - More Vibrant
+                primaryBlue: '#2196F3',
+                accentBlue: '#03A9F4',
+                borderBlue: '#81D4FA',
 
                 // Button & Interactive Elements
-                buttonPrimary: '#64B5F6',
-                buttonSecondary: '#90CAF9',
+                buttonPrimary: '#2196F3',
+                buttonSecondary: '#4FC3F7',
 
                 // Backgrounds
                 bgWhite: '#FFFFFF',
-                bgLight: '#F5FBFF',
+                bgLight: '#E3F2FD',
                 bgGradientStart: '#FFFFFF',
-                bgGradientEnd: '#E3F2FD',
+                bgGradientEnd: '#B3E5FC',
 
-                // Glass Effect (updated for light theme)
-                glassBg: 'rgba(255,255,255, 0.99)',
-                glassBorder: 'rgba(100,181,246,0.2)',
+                // Glass Effect - More Vibrant
+                glassBg: 'rgba(255,255,255,0.9)',
+                glassBorder: 'rgba(33,150,243,0.3)',
             },
             borderRadius: {
                 xl: '20px',
@@ -70,10 +70,11 @@ module.exports = {
                 'gradient-card': 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(227,242,253,0.7))',
             },
             fontSize: {
-                'heading-main': ['28px', { lineHeight: '32px', fontWeight: '800' }],
+                'heading-main': ['28px', { lineHeight: '32px', fontWeight: '700' }],
                 'heading': ['24px', { lineHeight: '28px', fontWeight: '600' }],
-                'subheading': ['22px', { lineHeight: '28px', fontWeight: '600' }],
-                'body': ['14px', { lineHeight: '20px', fontWeight: '300' }],
+                'middleheadingsub': ['20px', { lineHeight: '24px', fontWeight: '600' }],
+                'subheading': ['18px', { lineHeight: '20px', fontWeight: '500' }],
+                'body': ['14px', { lineHeight: '20px', fontWeight: '400' }],
             },
         },
     },
