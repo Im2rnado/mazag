@@ -7,24 +7,41 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "androidStatusBar": {
+      "translucent": true,
+      "backgroundColor": "#FFFFFF"
+    },
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#E3F2FD"
+      "backgroundColor": "#006FFF"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
+      "requireFullScreen": true,
       "supportsTablet": true,
-      "bundleIdentifier": "com.mazag.app"
+      "bundleIdentifier": "com.mazag.app",
+      "jsEngine": "hermes",
+      "newArchEnabled": true,
+      "userInterfaceStyle": "automatic",
+      "icon": {
+        "dark": "./assets/dark-icon.png",
+        "light": "./assets/icon.png",
+        "tinted": "./assets/adaptive-icon.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#E3F2FD"
+        "backgroundColor": "#006FFF"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.mazag.app"
+      "package": "com.mazag.app",
+      "softwareKeyboardLayoutMode": "pan",
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,6 +49,16 @@
     "plugins": [
       "expo-router",
       "expo-font"
-    ]
+    ],
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#006FFF"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "jsEngine": "hermes",
+    "newArchEnabled": true
   }
 }

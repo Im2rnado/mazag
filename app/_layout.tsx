@@ -16,6 +16,9 @@ function CustomTabBar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Hide tab bar on chat route
+  const shouldHideTabBar = pathname === '/chat' || pathname === '/chat/index';
+
   const tabs = [
     { name: '/', icon: 'home', iconOutline: 'home-outline', label: 'Home' },
     { name: '/therapists', icon: 'people', iconOutline: 'people-outline', label: 'Therapists' },
@@ -37,6 +40,8 @@ function CustomTabBar() {
       router.push(tabName as any);
     }
   };
+
+  if (shouldHideTabBar) return null;
 
   return (
     <View className="absolute bottom-0 left-0 right-0 pb-6 px-4">
@@ -89,7 +94,7 @@ function CustomTabBar() {
                 hitSlop={{ top: 10, bottom: 10, left: 5, right: 5 }}
               >
                 <Ionicons
-                  name={active ? tab.icon : tab.iconOutline}
+                  name={(active ? tab.icon : tab.iconOutline) as any}
                   size={26}
                   color={active ? '#64B5F6' : '#8FA9B8'}
                 />
