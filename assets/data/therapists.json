@@ -1,26 +1,408 @@
 [
     {
         "id": "t1",
-        "name": "Dr. Sara Amin",
+        "name": "Sara Amin",
+        "title": "Dr.",
         "specialization": "Clinical Psychologist",
+        "gender": "Female",
         "price": 600,
-        "rating": 4.8,
-        "bio": "CBT and adolescent therapy. Arabic + English."
+        "rating": 4.9,
+        "reviewCount": 127,
+        "bio": "Specialized in Cognitive Behavioral Therapy (CBT) with a focus on anxiety, depression, and adolescent mental health. Bilingual practice with cultural sensitivity.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Teens (13-17)",
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 12,
+        "qualifications": [
+            "Ph.D. in Clinical Psychology",
+            "CBT Certified Therapist",
+            "Licensed Clinical Psychologist"
+        ],
+        "approach": "I use evidence-based CBT techniques combined with mindfulness practices to help clients identify and change negative thought patterns. My approach is collaborative and tailored to each individual's needs.",
+        "availableSlots": [
+            "2025-11-10T09:00:00",
+            "2025-11-10T11:00:00",
+            "2025-11-10T14:00:00",
+            "2025-11-11T10:00:00",
+            "2025-11-11T15:00:00",
+            "2025-11-12T09:00:00",
+            "2025-11-12T16:00:00"
+        ]
     },
     {
         "id": "t2",
-        "name": "Maged ElSayed",
-        "specialization": "Counsellor",
-        "price": 450,
-        "rating": 4.5,
-        "bio": "Stress management, emotional regulation."
+        "name": "Ahmed Hassan",
+        "title": "Dr.",
+        "specialization": "Psychiatrist",
+        "gender": "Male",
+        "price": 750,
+        "rating": 4.8,
+        "reviewCount": 203,
+        "bio": "Board-certified psychiatrist with expertise in mood disorders, ADHD, and medication management. Holistic approach combining therapy and medication when needed.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Adults (18-64)",
+            "Seniors (65+)"
+        ],
+        "yearsOfExperience": 15,
+        "qualifications": [
+            "M.D. in Psychiatry",
+            "Board Certified Psychiatrist",
+            "Psychopharmacology Specialist"
+        ],
+        "approach": "I believe in a comprehensive treatment approach that considers biological, psychological, and social factors. I work closely with patients to find the right balance of therapy and medication.",
+        "availableSlots": [
+            "2025-11-10T10:00:00",
+            "2025-11-10T13:00:00",
+            "2025-11-11T09:00:00",
+            "2025-11-11T14:00:00",
+            "2025-11-12T11:00:00"
+        ]
     },
     {
         "id": "t3",
-        "name": "Dr. Nour Hassan",
+        "name": "Nour Hassan",
+        "title": "Dr.",
         "specialization": "Family Therapist",
+        "gender": "Female",
         "price": 550,
         "rating": 4.7,
-        "bio": "Family dynamics, relationship counseling."
+        "reviewCount": 89,
+        "bio": "Experienced in family dynamics, relationship counseling, and couples therapy. Creating safe spaces for open communication and healing.",
+        "languages": [
+            "Arabic",
+            "English",
+            "French"
+        ],
+        "ageGroups": [
+            "Children (5-12)",
+            "Teens (13-17)",
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 10,
+        "qualifications": [
+            "Master's in Marriage and Family Therapy",
+            "Licensed Family Therapist",
+            "Gottman Method Certified"
+        ],
+        "approach": "I use systemic and solution-focused therapy to help families and couples improve communication, resolve conflicts, and build stronger relationships.",
+        "availableSlots": [
+            "2025-11-10T12:00:00",
+            "2025-11-10T15:00:00",
+            "2025-11-11T11:00:00",
+            "2025-11-11T16:00:00",
+            "2025-11-12T10:00:00",
+            "2025-11-12T14:00:00"
+        ]
+    },
+    {
+        "id": "t4",
+        "name": "Maged ElSayed",
+        "title": "",
+        "specialization": "Licensed Counselor",
+        "gender": "Male",
+        "price": 450,
+        "rating": 4.6,
+        "reviewCount": 156,
+        "bio": "Specializing in stress management, emotional regulation, and work-life balance. Practical, goal-oriented approach to mental wellness.",
+        "languages": [
+            "Arabic"
+        ],
+        "ageGroups": [
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 8,
+        "qualifications": [
+            "Master's in Counseling Psychology",
+            "Licensed Professional Counselor",
+            "Stress Management Specialist"
+        ],
+        "approach": "I help clients develop practical coping strategies and emotional regulation skills through a blend of cognitive-behavioral and mindfulness techniques.",
+        "availableSlots": [
+            "2025-11-10T09:00:00",
+            "2025-11-10T14:00:00",
+            "2025-11-11T10:00:00",
+            "2025-11-11T15:00:00",
+            "2025-11-12T09:00:00"
+        ]
+    },
+    {
+        "id": "t5",
+        "name": "Layla Mahmoud",
+        "title": "Dr.",
+        "specialization": "Child Psychologist",
+        "gender": "Female",
+        "price": 650,
+        "rating": 4.9,
+        "reviewCount": 142,
+        "bio": "Passionate about helping children and adolescents navigate emotional challenges, behavioral issues, and developmental concerns through play therapy and family involvement.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Children (5-12)",
+            "Teens (13-17)"
+        ],
+        "yearsOfExperience": 11,
+        "qualifications": [
+            "Ph.D. in Child Psychology",
+            "Play Therapy Certified",
+            "Trauma-Informed Care Specialist"
+        ],
+        "approach": "I use play therapy and age-appropriate techniques to help children express emotions and develop healthy coping mechanisms in a nurturing environment.",
+        "availableSlots": [
+            "2025-11-10T10:00:00",
+            "2025-11-10T13:00:00",
+            "2025-11-11T09:00:00",
+            "2025-11-11T14:00:00",
+            "2025-11-12T10:00:00",
+            "2025-11-12T15:00:00"
+        ]
+    },
+    {
+        "id": "t6",
+        "name": "Omar Khalil",
+        "title": "Dr.",
+        "specialization": "Trauma Therapist",
+        "gender": "Male",
+        "price": 700,
+        "rating": 4.8,
+        "reviewCount": 98,
+        "bio": "Specialized in PTSD, trauma recovery, and EMDR therapy. Helping individuals heal from traumatic experiences with compassion and evidence-based methods.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Adults (18-64)",
+            "Seniors (65+)"
+        ],
+        "yearsOfExperience": 13,
+        "qualifications": [
+            "Ph.D. in Clinical Psychology",
+            "EMDR Certified Therapist",
+            "Trauma Recovery Specialist"
+        ],
+        "approach": "I use EMDR and trauma-focused CBT to help clients process traumatic memories and develop resilience in a safe, supportive environment.",
+        "availableSlots": [
+            "2025-11-10T11:00:00",
+            "2025-11-10T15:00:00",
+            "2025-11-11T10:00:00",
+            "2025-11-11T13:00:00",
+            "2025-11-12T09:00:00",
+            "2025-11-12T14:00:00"
+        ]
+    },
+    {
+        "id": "t7",
+        "name": "Yasmine Fouad",
+        "title": "Dr.",
+        "specialization": "Addiction Counselor",
+        "gender": "Female",
+        "price": 580,
+        "rating": 4.7,
+        "reviewCount": 73,
+        "bio": "Dedicated to helping individuals overcome addiction and develop healthy coping strategies. Experience with substance abuse and behavioral addictions.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Teens (13-17)",
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 9,
+        "qualifications": [
+            "Master's in Addiction Counseling",
+            "Certified Addiction Specialist",
+            "Recovery Coach"
+        ],
+        "approach": "I use motivational interviewing and cognitive-behavioral approaches to support clients through recovery, focusing on relapse prevention and building a meaningful life.",
+        "availableSlots": [
+            "2025-11-10T09:00:00",
+            "2025-11-10T12:00:00",
+            "2025-11-11T11:00:00",
+            "2025-11-11T15:00:00",
+            "2025-11-12T10:00:00"
+        ]
+    },
+    {
+        "id": "t8",
+        "name": "Karim Zaki",
+        "title": "",
+        "specialization": "Career Counselor",
+        "gender": "Male",
+        "price": 400,
+        "rating": 4.5,
+        "reviewCount": 64,
+        "bio": "Helping young adults and professionals navigate career transitions, burnout, and work-related stress. Practical guidance for professional growth.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 6,
+        "qualifications": [
+            "Master's in Counseling",
+            "Career Development Facilitator",
+            "Burnout Prevention Specialist"
+        ],
+        "approach": "I help clients identify their strengths, set achievable goals, and develop strategies to overcome professional challenges while maintaining mental wellness.",
+        "availableSlots": [
+            "2025-11-10T10:00:00",
+            "2025-11-10T14:00:00",
+            "2025-11-11T09:00:00",
+            "2025-11-11T16:00:00",
+            "2025-11-12T11:00:00",
+            "2025-11-12T15:00:00"
+        ]
+    },
+    {
+        "id": "t9",
+        "name": "Heba Ramadan",
+        "title": "Dr.",
+        "specialization": "Geriatric Psychologist",
+        "gender": "Female",
+        "price": 620,
+        "rating": 4.8,
+        "reviewCount": 51,
+        "bio": "Specialized in mental health care for seniors, addressing depression, anxiety, cognitive decline, and life transitions with empathy and respect.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Adults (18-64)",
+            "Seniors (65+)"
+        ],
+        "yearsOfExperience": 14,
+        "qualifications": [
+            "Ph.D. in Geriatric Psychology",
+            "Certified Geriatric Specialist",
+            "Dementia Care Expert"
+        ],
+        "approach": "I provide compassionate care tailored to the unique needs of older adults, focusing on quality of life, cognitive health, and emotional well-being.",
+        "availableSlots": [
+            "2025-11-10T09:00:00",
+            "2025-11-10T11:00:00",
+            "2025-11-11T10:00:00",
+            "2025-11-11T13:00:00",
+            "2025-11-12T09:00:00",
+            "2025-11-12T12:00:00"
+        ]
+    },
+    {
+        "id": "t10",
+        "name": "Tareq Ibrahim",
+        "title": "Dr.",
+        "specialization": "Sports Psychologist",
+        "gender": "Male",
+        "price": 680,
+        "rating": 4.7,
+        "reviewCount": 82,
+        "bio": "Working with athletes and active individuals on performance anxiety, motivation, and mental resilience. Bridging the gap between physical and mental fitness.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Teens (13-17)",
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 7,
+        "qualifications": [
+            "Ph.D. in Sports Psychology",
+            "Performance Enhancement Specialist",
+            "Mental Toughness Coach"
+        ],
+        "approach": "I help athletes develop mental skills like focus, confidence, and resilience through visualization, goal-setting, and mindfulness techniques.",
+        "availableSlots": [
+            "2025-11-10T08:00:00",
+            "2025-11-10T12:00:00",
+            "2025-11-11T08:00:00",
+            "2025-11-11T14:00:00",
+            "2025-11-12T10:00:00",
+            "2025-11-12T16:00:00"
+        ]
+    },
+    {
+        "id": "t11",
+        "name": "Dina Hosny",
+        "title": "Dr.",
+        "specialization": "Eating Disorder Specialist",
+        "gender": "Female",
+        "price": 720,
+        "rating": 4.9,
+        "reviewCount": 95,
+        "bio": "Expert in treating eating disorders, body image issues, and related mental health challenges. Holistic, non-judgmental approach to recovery.",
+        "languages": [
+            "Arabic",
+            "English",
+            "French"
+        ],
+        "ageGroups": [
+            "Teens (13-17)",
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 10,
+        "qualifications": [
+            "Ph.D. in Clinical Psychology",
+            "Eating Disorder Specialist",
+            "Body Image Therapist"
+        ],
+        "approach": "I use a combination of CBT, DBT, and nutritional counseling to help clients heal their relationship with food and their bodies.",
+        "availableSlots": [
+            "2025-11-10T10:00:00",
+            "2025-11-10T13:00:00",
+            "2025-11-11T09:00:00",
+            "2025-11-11T15:00:00",
+            "2025-11-12T11:00:00",
+            "2025-11-12T14:00:00"
+        ]
+    },
+    {
+        "id": "t12",
+        "name": "Amr Youssef",
+        "title": "",
+        "specialization": "Mindfulness Coach",
+        "gender": "Male",
+        "price": 380,
+        "rating": 4.6,
+        "reviewCount": 118,
+        "bio": "Teaching mindfulness, meditation, and stress reduction techniques for daily life. Accessible, practical approach to mental wellness.",
+        "languages": [
+            "Arabic",
+            "English"
+        ],
+        "ageGroups": [
+            "Adults (18-64)"
+        ],
+        "yearsOfExperience": 5,
+        "qualifications": [
+            "Master's in Counseling",
+            "Certified Mindfulness Instructor",
+            "Meditation Teacher"
+        ],
+        "approach": "I guide clients through mindfulness practices to reduce stress, increase self-awareness, and improve overall well-being in a supportive, non-judgmental space.",
+        "availableSlots": [
+            "2025-11-10T09:00:00",
+            "2025-11-10T12:00:00",
+            "2025-11-10T15:00:00",
+            "2025-11-11T10:00:00",
+            "2025-11-11T14:00:00",
+            "2025-11-12T09:00:00",
+            "2025-11-12T13:00:00"
+        ]
     }
 ]

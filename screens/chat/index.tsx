@@ -68,7 +68,7 @@ export default function Chat() {
                                 borderColor: 'rgba(33, 150, 243, 0.2)',
                             }}
                         >
-                            <Ionicons name="arrow-back" size={26} color="#2196F3" />
+                            <Ionicons name="arrow-back" size={24} color="#2196F3" />
                         </TouchableOpacity>
 
                         {/* Title - Center */}

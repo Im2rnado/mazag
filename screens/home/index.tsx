@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, ScrollView, Pressable, ImageBackground } from 'react-native';
 import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -65,7 +65,7 @@ export default function Home() {
 
     return (
         <ImageBackground
-            source={require('../../assets/images/background blue.png')}
+            source={require('@/assets/images/background blue.png')}
             style={{ width: '100%', height: '100%' }}
         >
             <ScrollView
@@ -87,10 +87,9 @@ export default function Home() {
                         </View>
 
                         {/* Profile Picture */}
-                        <TouchableOpacity
+                        <Pressable
                             onPress={() => router.push('/settings')}
-                            activeOpacity={0.8}
-                            style={{
+                            style={({ pressed }) => ({
                                 width: 48,
                                 height: 48,
                                 borderRadius: 24,
@@ -104,10 +103,11 @@ export default function Home() {
                                 shadowOpacity: 0.2,
                                 shadowRadius: 12,
                                 elevation: 8,
-                            }}
+                                opacity: pressed ? 0.8 : 1,
+                            })}
                         >
                             <Ionicons name="person" size={28} color="#2196F3" />
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
 
                     {/* Mood Selector Card with Blur */}
@@ -134,11 +134,13 @@ export default function Home() {
 
                         <View className="flex-row justify-between items-center gap-4">
                             {moods.map((mood) => (
-                                <TouchableOpacity
+                                <Pressable
                                     key={mood.id}
                                     onPress={() => setSelectedMood(mood.id)}
                                     className="items-center flex-1"
-                                    activeOpacity={0.7}
+                                    style={({ pressed }) => ({
+                                        opacity: pressed ? 0.7 : 1,
+                                    })}
                                 >
                                     {/* Colored Circle with Icon */}
                                     <View style={{
@@ -166,7 +168,7 @@ export default function Home() {
                                         className={`text-sm text-center ${selectedMood === mood.id ? 'font-avenir-bold' : 'font-avenir-semibold'}`} >
                                         {mood.label}
                                     </Text>
-                                </TouchableOpacity>
+                                </Pressable>
                             ))}
                         </View>
                     </BlurView>
@@ -219,18 +221,18 @@ export default function Home() {
                         {/* First Row */}
                         <View className="flex-row justify-between mb-3">
                             {quickActions.slice(0, 2).map((action) => (
-                                <TouchableOpacity
+                                <Pressable
                                     key={action.id}
                                     onPress={() => router.push(action.route as any)}
                                     className="bg-glassBg rounded-2xl w-[42vw] p-5 border border-glassBorder items-center"
-                                    activeOpacity={0.7}
-                                    style={{
+                                    style={({ pressed }) => ({
                                         shadowColor: action.color,
                                         shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.25,
+                                        shadowOpacity: pressed ? 0.3 : 0.25,
                                         shadowRadius: 12,
                                         elevation: 6,
-                                    }}
+                                        opacity: pressed ? 0.7 : 1,
+                                    })}
                                 >
                                     <View
                                         className="w-14 h-14 rounded-full items-center justify-center mb-3"
@@ -241,24 +243,24 @@ export default function Home() {
                                     <Text className="text-body font-avenir-semibold text-textStrong text-center">
                                         {action.label}
                                     </Text>
-                                </TouchableOpacity>
+                                </Pressable>
                             ))}
                         </View>
                         {/* Second Row */}
                         <View className="flex-row justify-between">
                             {quickActions.slice(2, 4).map((action) => (
-                                <TouchableOpacity
+                                <Pressable
                                     key={action.id}
                                     onPress={() => router.push(action.route as any)}
                                     className="bg-glassBg rounded-2xl w-[42vw] p-5 border border-glassBorder items-center"
-                                    activeOpacity={0.7}
-                                    style={{
+                                    style={({ pressed }) => ({
                                         shadowColor: action.color,
                                         shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.25,
+                                        shadowOpacity: pressed ? 0.3 : 0.25,
                                         shadowRadius: 12,
                                         elevation: 6,
-                                    }}
+                                        opacity: pressed ? 0.7 : 1,
+                                    })}
                                 >
                                     <View
                                         className="w-14 h-14 rounded-full items-center justify-center mb-3"
@@ -269,7 +271,7 @@ export default function Home() {
                                     <Text className="text-body font-avenir-semibold text-textStrong text-center">
                                         {action.label}
                                     </Text>
-                                </TouchableOpacity>
+                                </Pressable>
                             ))}
                         </View>
                     </View>
@@ -295,22 +297,22 @@ export default function Home() {
                                 <MaterialCommunityIcons name="account-heart" size={32} color="#2196F3" />
                             </View>
                         </View>
-                        <TouchableOpacity
+                        <Pressable
                             onPress={() => router.push('/therapists')}
                             className="bg-buttonPrimary rounded-2xl py-4 items-center"
-                            activeOpacity={0.8}
-                            style={{
+                            style={({ pressed }) => ({
                                 shadowColor: '#2196F3',
                                 shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
+                                shadowOpacity: pressed ? 0.4 : 0.3,
                                 shadowRadius: 8,
                                 elevation: 4,
-                            }}
+                                opacity: pressed ? 0.8 : 1,
+                            })}
                         >
                             <Text className="text-subheading font-avenir-bold text-white">
                                 Find a Match
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
 
                     {/* Stats Summary */}
@@ -320,10 +322,12 @@ export default function Home() {
                         </Text>
 
                         {/* Weekly Mood Card */}
-                        <TouchableOpacity
-                            activeOpacity={0.8}
+                        <Pressable
                             className="mb-3"
                             onPress={() => router.push('/tracker')}
+                            style={({ pressed }) => ({
+                                opacity: pressed ? 0.8 : 1,
+                            })}
                         >
                             <ExpoLinearGradient
                                 colors={['#FFF9C4', '#FFF176']}
@@ -364,13 +368,15 @@ export default function Home() {
                                     <Ionicons name="chevron-forward" size={24} color="#F57F17" />
                                 </View>
                             </ExpoLinearGradient>
-                        </TouchableOpacity>
+                        </Pressable>
 
                         {/* Journaling Streak Card */}
-                        <TouchableOpacity
-                            activeOpacity={0.8}
+                        <Pressable
                             className="mb-3"
                             onPress={() => router.push('/journal')}
+                            style={({ pressed }) => ({
+                                opacity: pressed ? 0.8 : 1,
+                            })}
                         >
                             <ExpoLinearGradient
                                 colors={['#FFCC80', '#FFB74D']}
@@ -413,13 +419,15 @@ export default function Home() {
                                     </Text>
                                 </View>
                             </ExpoLinearGradient>
-                        </TouchableOpacity>
+                        </Pressable>
 
                         {/* AI Chatbot Conversations Card */}
-                        <TouchableOpacity
-                            activeOpacity={0.8}
+                        <Pressable
                             className="mb-3"
                             onPress={() => router.push('/chat')}
+                            style={({ pressed }) => ({
+                                opacity: pressed ? 0.8 : 1,
+                            })}
                         >
                             <ExpoLinearGradient
                                 colors={['#B3E5FC', '#81D4FA']}
@@ -460,12 +468,14 @@ export default function Home() {
                                     <Ionicons name="chatbubbles" size={28} color="#0277BD" />
                                 </View>
                             </ExpoLinearGradient>
-                        </TouchableOpacity>
+                        </Pressable>
 
                         {/* Exercises Completed Card */}
-                        <TouchableOpacity
-                            activeOpacity={0.8}
+                        <Pressable
                             onPress={() => router.push('/exercises')}
+                            style={({ pressed }) => ({
+                                opacity: pressed ? 0.8 : 1,
+                            })}
                         >
                             <ExpoLinearGradient
                                 colors={['#E1BEE7', '#CE93D8']}
@@ -508,7 +518,7 @@ export default function Home() {
                                     </Text>
                                 </View>
                             </ExpoLinearGradient>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
 
                     {/* Mazag Bot Summary */}
@@ -553,28 +563,28 @@ export default function Home() {
                                     </View>
 
                                     {/* Go Pro Button */}
-                                    <TouchableOpacity
-                                        activeOpacity={0.8}
+                                    <Pressable
                                         onPress={() => router.push('/settings')}
-                                        style={{
+                                        style={({ pressed }) => ({
                                             backgroundColor: '#FFD700',
                                             borderRadius: 12,
                                             paddingVertical: 8,
                                             paddingHorizontal: 10,
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
                                             shadowColor: '#FFD700',
                                             shadowOffset: { width: 0, height: 3 },
-                                            shadowOpacity: 0.4,
+                                            shadowOpacity: pressed ? 0.5 : 0.4,
                                             shadowRadius: 8,
                                             elevation: 4,
-                                        }}
+                                            opacity: pressed ? 0.8 : 1,
+                                        })}
                                     >
-                                        <Ionicons name="star" size={18} color="#FFFFFF" style={{ marginRight: 8 }} />
-                                        <Text className="text-sm font-avenir-bold text-white">
-                                            Go PRO for unlimited!
-                                        </Text>
-                                    </TouchableOpacity>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                            <Ionicons name="star" size={18} color="#FFFFFF" style={{ marginLeft: 8, marginRight: 4 }} />
+                                            <Text className="text-sm font-avenir-bold text-white">
+                                                Go PRO for unlimited messages!
+                                            </Text>
+                                        </View>
+                                    </Pressable>
                                 </View>
 
                                 {/* Right Side - Chatbot Icon */}

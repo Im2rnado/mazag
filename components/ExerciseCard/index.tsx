@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Exercise } from '@/types';
 import GlassCard from '@/components/GlassCard';
 
@@ -11,7 +11,12 @@ type Props = {
 export default function ExerciseCard({ exercise, onPress }: Props) {
     return (
         <GlassCard className="mb-4">
-            <TouchableOpacity onPress={onPress}>
+            <Pressable
+                onPress={onPress}
+                style={({ pressed }) => ({
+                    opacity: pressed ? 0.7 : 1,
+                })}
+            >
                 <Text className="text-lg font-avenir-semibold text-textStrong">
                     {exercise.title}
                 </Text>
@@ -29,13 +34,18 @@ export default function ExerciseCard({ exercise, onPress }: Props) {
                             {exercise.durationMinutes} minutes
                         </Text>
                     )}
-                    <TouchableOpacity className="bg-buttonPrimary px-4 py-2 rounded-xl">
+                    <Pressable
+                        className="bg-buttonPrimary px-4 py-2 rounded-xl"
+                        style={({ pressed }) => ({
+                            opacity: pressed ? 0.8 : 1,
+                        })}
+                    >
                         <Text className="text-white font-avenir-semibold text-body">
                             Start
                         </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
-            </TouchableOpacity>
+            </Pressable>
         </GlassCard>
     );
 }

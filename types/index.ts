@@ -8,12 +8,20 @@ export type User = {
 export type Therapist = {
   id: string;
   name: string;
+  title: string; // Dr., etc.
   specialization: string;
   price: number;
   rating?: number;
+  reviewCount?: number;
   bio?: string;
   languages?: string[];
-  availability?: string[]; // ISO datetimes / slots
+  gender: 'Male' | 'Female';
+  ageGroups?: string[]; // e.g., "Children (5-12)", "Teens (13-17)", "Adults (18-64)", "Seniors (65+)"
+  yearsOfExperience?: number;
+  qualifications?: string[];
+  approach?: string; // Therapy approach description
+  availableSlots?: string[]; // ISO datetime strings
+  image?: string; // Avatar/photo URL
 };
 
 export type Message = {

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
-import { Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, Pressable } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { Tabs, useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,8 +16,8 @@ function CustomTabBar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Hide tab bar on chat route
-  const shouldHideTabBar = pathname === '/chat' || pathname === '/chat/index';
+  // Hide tab bar on chat route and therapist detail pages
+  const shouldHideTabBar = pathname === '/chat' || pathname === '/chat/index' || (pathname.startsWith('/therapists/') && pathname !== '/therapists' && pathname !== '/therapists/');
 
   const tabs = [
     { name: '/', icon: 'home', iconOutline: 'home-outline', label: 'Home' },
@@ -47,9 +47,11 @@ function CustomTabBar() {
     <View className="absolute bottom-0 left-0 right-0 pb-6 px-4">
       {/* Floating Orb - Chatbot */}
       <View className="items-center mb-[-36px] z-10">
-        <TouchableOpacity
+        <Pressable
           onPress={() => handlePress('chatbot-orb')}
-          activeOpacity={0.9}
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.9 : 1,
+          })}
         >
           <AnimatedChromeOrb
             size={65}
@@ -62,7 +64,7 @@ function CustomTabBar() {
             }}
             isActive={isActive('chatbot-orb')}
           />
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* Main Tab Bar */}
@@ -86,12 +88,14 @@ function CustomTabBar() {
             const active = isActive(tab.name);
 
             return (
-              <TouchableOpacity
+              <Pressable
                 key={tab.name}
                 onPress={() => handlePress(tab.name)}
                 className="items-center flex-1 py-1"
-                activeOpacity={0.6}
                 hitSlop={{ top: 10, bottom: 10, left: 5, right: 5 }}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.6 : 1,
+                })}
               >
                 <Ionicons
                   name={(active ? tab.icon : tab.iconOutline) as any}
@@ -103,7 +107,7 @@ function CustomTabBar() {
                 >
                   {tab.label}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             );
           })}
         </View>
@@ -161,7 +165,7 @@ export default function RootLayout() {
       <View onLayout={onLayoutRootView} className="flex-1">
         <Tabs
           screenOptions={{
-            headerShown: false,
+            headerShown: false
           }}
           tabBar={() => <CustomTabBar />}
         >
@@ -172,7 +176,7 @@ export default function RootLayout() {
             }}
           />
           <Tabs.Screen
-            name="therapists/index"
+            name="therapists"
             options={{
               title: 'Therapists',
             }}

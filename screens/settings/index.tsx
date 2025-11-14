@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -40,9 +40,12 @@ export default function Settings() {
               key={item.id}
               className="bg-glassBg rounded-xl p-4 border border-glassBorder mb-3"
             >
-              <TouchableOpacity
+              <Pressable
                 onPress={item.onPress}
                 className="flex-row items-center justify-between"
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.7 : 1,
+                })}
               >
                 <View className="flex-row items-center">
                   <Ionicons name={item.icon} size={24} color="#64B5F6" />
@@ -51,7 +54,7 @@ export default function Settings() {
                   </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20} color="#8FA9B8" />
-              </TouchableOpacity>
+              </Pressable>
             </View>
           ))}
         </ScrollView>
