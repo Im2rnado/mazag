@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, View, Text, TextInput, ScrollView, Pressable, Animated } from 'react-native';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { View, Text, TextInput, ScrollView, Pressable, Animated } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -17,11 +18,14 @@ type FilterType = {
     ageGroups: string[];
 };
 
+// Cache for therapists data to avoid reloading
+let therapistsCache: Therapist[] | null = null;
+let filtersCache: { specializations: string[]; languages: string[]; ageGroups: string[] } | null = null;
+
 export default function Therapists() {
     const router = useRouter();
-    const [therapists, setTherapists] = useState<Therapist[]>([]);
-    const [filteredTherapists, setFilteredTherapists] = useState<Therapist[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [therapists, setTherapists] = useState<Therapist[]>(therapistsCache || []);
+    const [loading, setLoading] = useState(!therapistsCache);
     const [searchQuery, setSearchQuery] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [filterAnimation] = useState(new Animated.Value(0));
@@ -36,30 +40,49 @@ export default function Therapists() {
         ageGroups: [],
     });
 
-    // Available filter options
-    const [availableFilters, setAvailableFilters] = useState({
-        specializations: [] as string[],
-        languages: [] as string[],
-        ageGroups: [] as string[],
-    });
+    // Memoize available filter options to avoid recalculation
+    const availableFilters = useMemo(() => {
+        if (filtersCache) return filtersCache;
+
+        if (therapists.length === 0) {
+            return {
+                specializations: [] as string[],
+                languages: [] as string[],
+                ageGroups: [] as string[],
+            };
+        }
+
+        const specs = [...new Set(therapists.map(t => t.specialization))];
+        const langs = [...new Set(therapists.flatMap(t => t.languages || []))];
+        const ages = [...new Set(therapists.flatMap(t => t.ageGroups || []))];
+
+        const filters = {
+            specializations: specs,
+            languages: langs,
+            ageGroups: ages,
+        };
+
+        // Cache for future use
+        if (!filtersCache) {
+            filtersCache = filters;
+        }
+
+        return filters;
+    }, [therapists]);
 
     useEffect(() => {
+        // If data is already cached, skip loading
+        if (therapistsCache) {
+            return;
+        }
+
         async function load() {
             try {
                 const list = await TherapistService.fetchAll();
                 setTherapists(list as Therapist[]);
-                setFilteredTherapists(list as Therapist[]);
 
-                // Extract unique values for filters
-                const specs = [...new Set(list.map(t => t.specialization))];
-                const langs = [...new Set(list.flatMap(t => t.languages || []))];
-                const ages = [...new Set(list.flatMap(t => t.ageGroups || []))];
-
-                setAvailableFilters({
-                    specializations: specs,
-                    languages: langs,
-                    ageGroups: ages,
-                });
+                // Cache the data for future visits
+                therapistsCache = list as Therapist[];
             } catch (error) {
                 console.error('Failed to load therapists:', error);
             } finally {
@@ -70,10 +93,6 @@ export default function Therapists() {
     }, []);
 
     useEffect(() => {
-        applyFilters();
-    }, [searchQuery, filters, therapists]);
-
-    useEffect(() => {
         Animated.spring(filterAnimation, {
             toValue: showFilters ? 1 : 0,
             useNativeDriver: false,
@@ -81,8 +100,9 @@ export default function Therapists() {
         }).start();
     }, [showFilters]);
 
-    const applyFilters = () => {
-        let filtered = [...therapists];
+    // Memoize filtered therapists to avoid unnecessary recalculations
+    const filteredTherapists = useMemo(() => {
+        let filtered = therapists;
 
         // Search filter
         if (searchQuery.trim()) {
@@ -130,10 +150,11 @@ export default function Therapists() {
             );
         }
 
-        setFilteredTherapists(filtered);
-    };
+        return filtered;
+    }, [therapists, searchQuery, filters]);
 
-    const toggleFilter = (type: keyof FilterType, value: any) => {
+    // Memoize callbacks to prevent unnecessary re-renders
+    const toggleFilter = useCallback((type: keyof FilterType, value: any) => {
         setFilters(prev => {
             const current = prev[type];
             if (Array.isArray(current)) {
@@ -144,9 +165,9 @@ export default function Therapists() {
             }
             return { ...prev, [type]: prev[type] === value ? null : value };
         });
-    };
+    }, []);
 
-    const clearFilters = () => {
+    const clearFilters = useCallback(() => {
         setFilters({
             specializations: [],
             priceRange: null,
@@ -156,19 +177,31 @@ export default function Therapists() {
             ageGroups: [],
         });
         setSearchQuery('');
-    };
+    }, []);
 
-    const handleTherapistPress = (therapist: Therapist) => {
+    const handleTherapistPress = useCallback((therapist: Therapist) => {
         router.push(`/therapists/${therapist.id}` as any);
-    };
+    }, [router]);
 
-    const activeFilterCount =
+    // Memoize active filter count
+    const activeFilterCount = useMemo(() =>
         filters.specializations.length +
         filters.languages.length +
         filters.genders.length +
         filters.ageGroups.length +
         (filters.priceRange ? 1 : 0) +
-        (filters.minRating ? 1 : 0);
+        (filters.minRating ? 1 : 0),
+        [filters]
+    );
+
+    // Memoize animated values (must be before early return)
+    const filterMaxHeight = useMemo(() =>
+        filterAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 600],
+        }),
+        [filterAnimation]
+    );
 
     if (loading) {
         return (
@@ -188,11 +221,6 @@ export default function Therapists() {
             </ExpoLinearGradient>
         );
     }
-
-    const filterMaxHeight = filterAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 600],
-    });
 
     return (
         <ExpoLinearGradient
@@ -522,10 +550,10 @@ export default function Therapists() {
                             </Text>
                         </View>
                     ) : (
-                        <FlatList
+                        <FlashList
                             data={filteredTherapists}
-                            keyExtractor={(t) => t.id}
-                            renderItem={({ item }) => (
+                            keyExtractor={(t: Therapist) => t.id}
+                            renderItem={({ item }: { item: Therapist }) => (
                                 <TherapistCard
                                     therapist={item}
                                     onPress={() => handleTherapistPress(item)}

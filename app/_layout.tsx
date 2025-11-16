@@ -6,6 +6,7 @@ import { Text, TextInput, View, Pressable } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { Tabs, useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AnimatedChromeOrb from '@/components/AnimatedChromeOrb';
 
 // Prevent splash screen from auto-hiding
@@ -17,7 +18,7 @@ function CustomTabBar() {
   const pathname = usePathname();
 
   // Hide tab bar on chat route and therapist detail pages
-  const shouldHideTabBar = pathname === '/chat' || pathname === '/chat/index' || (pathname.startsWith('/therapists/') && pathname !== '/therapists' && pathname !== '/therapists/');
+  const shouldHideTabBar = pathname.startsWith('/onboarding') || pathname === '/chat' || pathname === '/chat/index' || (pathname.startsWith('/therapists/') && pathname !== '/therapists' && pathname !== '/therapists/');
 
   const tabs = [
     { name: '/', icon: 'home', iconOutline: 'home-outline', label: 'Home' },
@@ -92,7 +93,7 @@ function CustomTabBar() {
                 key={tab.name}
                 onPress={() => handlePress(tab.name)}
                 className="items-center flex-1 py-1"
-                hitSlop={{ top: 10, bottom: 10, left: 5, right: 5 }}
+                hitSlop={{ top: 30, bottom: 20, left: 5, right: 5 }}
                 style={({ pressed }) => ({
                   opacity: pressed ? 0.6 : 1,
                 })}
@@ -155,52 +156,60 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <SafeAreaProvider>
-      <StatusBar
-        animated={true}
-        style="dark"
-        translucent={false}
-        backgroundColor="#FFFFFF"
-      />
-      <View onLayout={onLayoutRootView} className="flex-1">
-        <Tabs
-          screenOptions={{
-            headerShown: false
-          }}
-          tabBar={() => <CustomTabBar />}
-        >
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: 'Home',
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <StatusBar
+          animated={true}
+          style="dark"
+          translucent={false}
+          backgroundColor="#FFFFFF"
+        />
+        <View onLayout={onLayoutRootView} className="flex-1">
+          <Tabs
+            screenOptions={{
+              headerShown: false
             }}
-          />
-          <Tabs.Screen
-            name="therapists"
-            options={{
-              title: 'Therapists',
-            }}
-          />
-          <Tabs.Screen
-            name="chat/index"
-            options={{
-              title: 'Chatbot',
-            }}
-          />
-          <Tabs.Screen
-            name="exercises/index"
-            options={{
-              title: 'Exercises',
-            }}
-          />
-          <Tabs.Screen
-            name="settings/index"
-            options={{
-              title: 'Account',
-            }}
-          />
-        </Tabs>
-      </View>
-    </SafeAreaProvider>
+            tabBar={() => <CustomTabBar />}
+          >
+            <Tabs.Screen
+              name="index"
+              options={{
+                title: 'Home',
+              }}
+            />
+            <Tabs.Screen
+              name="therapists"
+              options={{
+                title: 'Therapists',
+              }}
+            />
+            <Tabs.Screen
+              name="chat/index"
+              options={{
+                title: 'Chatbot',
+              }}
+            />
+            <Tabs.Screen
+              name="exercises/index"
+              options={{
+                title: 'Exercises',
+              }}
+            />
+            <Tabs.Screen
+              name="settings/index"
+              options={{
+                title: 'Account',
+              }}
+            />
+            <Tabs.Screen
+              name="onboarding"
+              options={{
+                href: null, // Hide from tabs
+              }}
+            />
+          </Tabs>
+        </View>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

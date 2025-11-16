@@ -34,7 +34,30 @@ export type Message = {
 export type Exercise = {
   id: string;
   title: string;
-  type: 'breathing' | 'journaling' | 'meditation';
+  type: 'breathing' | 'journaling' | 'meditation' | 'relaxation' | 'movement';
   durationMinutes?: number;
   description?: string;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  benefits?: string[];
+};
+
+export type OnboardingResponse = {
+  primaryConcern: string[];
+  severityLevel: number;
+  therapyExperience: string;
+  therapyApproach: string[];
+  moodPatterns: string;
+  sleepQuality: number;
+  supportSystem: string;
+  wellnessGoals: string[];
+  preferredExercises: string[];
+  communicationStyle: string;
+  completedAt: string;
+};
+
+export type UserProfile = {
+  id: string;
+  name?: string;
+  onboarding?: OnboardingResponse;
+  hasCompletedOnboarding: boolean;
 };

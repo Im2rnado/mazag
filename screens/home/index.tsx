@@ -4,6 +4,9 @@ import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { BlurView } from 'expo-blur';
+import OnboardingService from '@/services/OnboardingService';
+import { OnboardingResponse } from '@/types/onboarding';
+import { getPersonalizedRecommendations, getPersonalizedQuickActions } from '@/utils/personalization';
 
 type Mood = 'happy' | 'joyful' | 'neutral' | 'sad' | 'angry' | null;
 
@@ -12,6 +15,9 @@ export default function Home() {
     const [greeting, setGreeting] = useState('Good Morning');
     const [userName] = useState('Yassin Bedier'); // This will come from user state later
     const [selectedMood, setSelectedMood] = useState<Mood>(null);
+    const [onboardingData, setOnboardingData] = useState<OnboardingResponse | null>(null);
+    const [personalizedGreeting, setPersonalizedGreeting] = useState('');
+    const [supportMessage, setSupportMessage] = useState('');
 
     useEffect(() => {
         const hour = new Date().getHours();
@@ -22,6 +28,27 @@ export default function Home() {
         } else {
             setGreeting('Good Evening,');
         }
+
+        // Check onboarding and load personalization
+        async function checkAndLoadOnboarding() {
+            const hasCompleted = await OnboardingService.hasCompletedOnboarding();
+
+            // If onboarding not completed, redirect to onboarding
+            if (!hasCompleted) {
+                router.replace('/onboarding/welcome' as any);
+                return;
+            }
+
+            // Load onboarding data for personalization
+            const data = await OnboardingService.getOnboardingData();
+            if (data) {
+                setOnboardingData(data);
+                const recommendations = getPersonalizedRecommendations(data);
+                setPersonalizedGreeting(recommendations.greeting);
+                setSupportMessage(recommendations.supportMessage);
+            }
+        }
+        checkAndLoadOnboarding();
     }, []);
 
     const moods = [
@@ -32,12 +59,24 @@ export default function Home() {
         { id: 'angry' as Mood, label: 'Angry', bgClass: 'moodAngry', icon: 'flame' },
     ];
 
-    const quickActions = [
-        { id: 'chat', label: 'Talk to Mazag', icon: 'chatbubble-ellipses', route: '/chat', color: '#4FC3F7' },
-        { id: 'relax', label: 'Relaxation Exercise', icon: 'flower', route: '/exercises', color: '#BA68C8' },
-        { id: 'journal', label: 'Journal Entry', icon: 'book', route: '/journal', color: '#FFB74D' },
-        { id: 'tracker', label: 'Mood Tracker', icon: 'analytics', route: '/tracker', color: '#81D4FA' },
-    ];
+    // Get personalized quick actions if onboarding data is available
+    const getQuickActions = () => {
+        if (onboardingData) {
+            const personalized = getPersonalizedQuickActions(onboardingData);
+            if (personalized.length >= 4) {
+                return personalized;
+            }
+        }
+        // Default actions
+        return [
+            { id: 'chat', label: 'Talk to Mazag', icon: 'chatbubble-ellipses' as const, route: '/chat', color: '#4FC3F7' },
+            { id: 'relax', label: 'Relaxation Exercise', icon: 'flower' as const, route: '/exercises', color: '#BA68C8' },
+            { id: 'journal', label: 'Journal Entry', icon: 'book' as const, route: '/journal', color: '#FFB74D' },
+            { id: 'tracker', label: 'Mood Tracker', icon: 'analytics' as const, route: '/tracker', color: '#81D4FA' },
+        ];
+    };
+
+    const quickActions = getQuickActions();
 
     // Mock stats - replace with real data later
     const stats = {
@@ -48,9 +87,15 @@ export default function Home() {
         messagesLeftThisMonth: 15,
     };
 
-    // Get recommendation based on mood
+    // Get recommendation based on mood and personalization
     const getRecommendation = () => {
-        if (!selectedMood) return null;
+        if (!selectedMood) {
+            // Show personalized message if no mood selected
+            if (personalizedGreeting && supportMessage) {
+                return `${personalizedGreeting}. ${supportMessage}.`;
+            }
+            return null;
+        }
 
         const recommendations = {
             happy: "You're feeling great! Keep the momentum going with a gratitude journal.",
@@ -522,7 +567,7 @@ export default function Home() {
                     </View>
 
                     {/* Mazag Bot Summary */}
-                    <View className="mb-6">
+                    <View className="mb-8">
                         <Text className="text-heading font-avenir-semibold text-textStrong mb-4">
                             Mazag Assistant
                         </Text>

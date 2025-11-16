@@ -1,30 +1,197 @@
 [
     {
         "id": "e1",
-        "title": "4-4-8 Breathing",
+        "title": "4-7-8 Breathing",
         "type": "breathing",
         "durationMinutes": 3,
-        "description": "Breathe in for 4s, hold 4s, exhale 8s."
+        "description": "A calming breathing technique to reduce anxiety. Breathe in for 4 seconds, hold for 7, exhale for 8.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Reduces anxiety",
+            "Improves sleep",
+            "Calms mind"
+        ]
     },
     {
         "id": "e2",
-        "title": "Journaling Prompt",
-        "type": "journaling",
-        "durationMinutes": 10,
-        "description": "Write for 10 minutes about what you are grateful for today."
-    },
-    {
-        "id": "e3",
-        "title": "Body Scan Meditation",
-        "type": "meditation",
-        "durationMinutes": 15,
-        "description": "Progressive relaxation focusing on each part of your body."
-    },
-    {
-        "id": "e4",
         "title": "Box Breathing",
         "type": "breathing",
         "durationMinutes": 5,
-        "description": "4-4-4-4 breathing pattern for stress relief."
+        "description": "Square breathing pattern used by Navy SEALs. Breathe in for 4, hold for 4, exhale for 4, hold for 4.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Stress relief",
+            "Focus",
+            "Emotional control"
+        ]
+    },
+    {
+        "id": "e3",
+        "title": "Alternate Breathing",
+        "type": "breathing",
+        "durationMinutes": 7,
+        "description": "Ancient yogic breathing technique for balance. Breathe through one nostril at a time.",
+        "difficulty": "intermediate",
+        "benefits": [
+            "Balances energy",
+            "Reduces stress",
+            "Clears mind"
+        ]
+    },
+    {
+        "id": "e4",
+        "title": "Body Scan Meditation",
+        "type": "meditation",
+        "durationMinutes": 15,
+        "description": "Progressive relaxation technique. Focus awareness on each part of your body from toes to head.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Deep relaxation",
+            "Body awareness",
+            "Better sleep"
+        ]
+    },
+    {
+        "id": "e5",
+        "title": "Loving-Kindness Meditation",
+        "type": "meditation",
+        "durationMinutes": 10,
+        "description": "Cultivate compassion for yourself and others. Send positive wishes to loved ones and all beings.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Increases compassion",
+            "Reduces negativity",
+            "Boosts mood"
+        ]
+    },
+    {
+        "id": "e6",
+        "title": "Mindful Observation",
+        "type": "meditation",
+        "durationMinutes": 5,
+        "description": "Choose an object and observe it mindfully. Notice every detail without judgment.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Present moment awareness",
+            "Focus",
+            "Calm mind"
+        ]
+    },
+    {
+        "id": "e7",
+        "title": "Guided Visualization",
+        "type": "meditation",
+        "durationMinutes": 12,
+        "description": "Imagine a peaceful place. Engage all your senses to create a vivid mental sanctuary.",
+        "difficulty": "intermediate",
+        "benefits": [
+            "Stress reduction",
+            "Mental escape",
+            "Emotional healing"
+        ]
+    },
+    {
+        "id": "e8",
+        "title": "Gratitude Journal",
+        "type": "journaling",
+        "durationMinutes": 10,
+        "description": "Write about three things you're grateful for today and why they matter to you.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Positive mindset",
+            "Happiness",
+            "Perspective"
+        ]
+    },
+    {
+        "id": "e9",
+        "title": "Stream of Consciousness",
+        "type": "journaling",
+        "durationMinutes": 15,
+        "description": "Write continuously without stopping. Let your thoughts flow freely onto the page.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Mental clarity",
+            "Self-discovery",
+            "Emotional release"
+        ]
+    },
+    {
+        "id": "e10",
+        "title": "Letter to Future Self",
+        "type": "journaling",
+        "durationMinutes": 20,
+        "description": "Write a letter to yourself one year from now. Share your hopes, dreams, and advice.",
+        "difficulty": "intermediate",
+        "benefits": [
+            "Goal clarity",
+            "Self-reflection",
+            "Motivation"
+        ]
+    },
+    {
+        "id": "e11",
+        "title": "Progressive Muscle Relaxation",
+        "type": "relaxation",
+        "durationMinutes": 12,
+        "description": "Tense and release each muscle group. Start with your toes and work up to your face.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Physical relaxation",
+            "Reduces tension",
+            "Better sleep"
+        ]
+    },
+    {
+        "id": "e12",
+        "title": "5-4-3-2-1 Grounding",
+        "type": "relaxation",
+        "durationMinutes": 5,
+        "description": "Identify 5 things you see, 4 you hear, 3 you feel, 2 you smell, 1 you taste. Grounds you in the present.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Anxiety relief",
+            "Present moment",
+            "Quick calming"
+        ]
+    },
+    {
+        "id": "e13",
+        "title": "Walking Meditation",
+        "type": "movement",
+        "durationMinutes": 15,
+        "description": "Walk slowly and mindfully. Focus on each step, your breath, and the sensations in your body.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Mind-body connection",
+            "Gentle exercise",
+            "Mental clarity"
+        ]
+    },
+    {
+        "id": "e14",
+        "title": "Gentle Stretching Flow",
+        "type": "movement",
+        "durationMinutes": 10,
+        "description": "Simple yoga-inspired stretches. Move slowly, breathe deeply, honor your body's limits.",
+        "difficulty": "beginner",
+        "benefits": [
+            "Physical wellness",
+            "Flexibility",
+            "Stress relief"
+        ]
+    },
+    {
+        "id": "e15",
+        "title": "Emotional Check-In",
+        "type": "journaling",
+        "durationMinutes": 8,
+        "description": "Name your current emotions. Explore what triggered them and what you need right now.",
+        "difficulty": "intermediate",
+        "benefits": [
+            "Emotional awareness",
+            "Self-understanding",
+            "Processing feelings"
+        ]
     }
 ]
