@@ -14,7 +14,7 @@
     "@react-native-community/slider": "5.0.1",
     "@shopify/flash-list": "2.0.2",
     "@shopify/react-native-skia": "2.2.12",
-    "axios": "^1.12.2",
+    "axios": "^1.13.5",
     "babel-plugin-module-resolver": "^5.0.2",
     "expo": "54.0.21",
     "expo-blur": "~15.0.7",
