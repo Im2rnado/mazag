@@ -22,6 +22,11 @@ export default function Chat() {
     const flashListRef = useRef<any>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
+    // Reset the session whenever the user opens the chat screen
+    useEffect(() => {
+        ChatbotService.resetSession();
+    }, []);
+
     // Auto-scroll to bottom when messages change
     useEffect(() => {
         if (messages.length > 0) {

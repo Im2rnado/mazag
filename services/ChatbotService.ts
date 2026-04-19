@@ -72,12 +72,9 @@ const ChatbotService = {
   },
 
   /**
-   * Stream a response token-by-token using Server-Sent Events.
-   *
-   * @param userMessage - The user's input text
-   * @param onToken - Called for each incoming token
-   * @param onDone - Called when the stream ends
-   * @param onError - Called on error
+   * Stream a response visually. By bypassing Expo's network bridge which notoriously buffers chunked
+   * transfer encoding into memory, we execute the normal HTTP generation phase and then beautifully
+   * stream the strings sequentially to the React engine!
    */
   async streamMessage(
     userMessage: string,
@@ -87,92 +84,58 @@ const ChatbotService = {
   ): Promise<void> {
     // Local crisis check
     if (hasCrisisKeyword(userMessage)) {
-      onToken(CRISIS_RESPONSE);
-      onDone();
+      this._simulateStream(CRISIS_RESPONSE, onToken, onDone);
       return;
     }
 
-    const sessionId = await getOrCreateSessionId();
-    const userId = await getUserId();
+    try {
+      const sessionId = await getOrCreateSessionId();
+      const userId = await getUserId();
 
-    // React Native's fetch doesn't support response.body.getReader() natively
-    // We use XMLHttpRequest instead to read chunks as they arrive (readyState 3)
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_BASE_URL}/chat/stream`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Accept', 'text/event-stream');
-    xhr.responseType = 'text';
+      // We hit the standard blocking generation endpoint instead of SSE.
+      // React Native's HTTP bridge almost universally buffers chunked transfers in modern
+      // Expo engines, causing the entire block to execute instantly at the end.
+      const response = await fetch(`${API_BASE_URL}/chat/message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMessage,
+          session_id: sessionId,
+          user_id: userId ?? undefined,
+        }),
+      });
 
-    let seenBytes = 0;
-    
-    xhr.onreadystatechange = () => {
-      // readyState 3 (LOADING) or 4 (DONE)
-      if (xhr.readyState === 3 || xhr.readyState === 4) {
-        if (xhr.status !== 200 && xhr.status !== 0) {
-          if (xhr.readyState === 4) {
-             onError(new Error(`Server error: ${xhr.status}`));
-          }
-          return;
-        }
-
-        // We only append to unparsed raw string, so we need to buffer the incoming text
-        const unparsedData = xhr.responseText || '';
-        
-        // We only look at new data since last split
-        const newData = unparsedData.substring(seenBytes);
-        
-        // Find the last complete event separated by \n\n
-        const lastCompleteIndex = newData.lastIndexOf('\n\n');
-        
-        if (lastCompleteIndex !== -1) {
-            // Process the complete chunks
-            const completeData = newData.substring(0, lastCompleteIndex);
-            
-            // Advance seenBytes to include the processed characters and the trailing \n\n
-            seenBytes += lastCompleteIndex + 2;
-            
-            const parts = completeData.split('\n\n');
-            for (const part of parts) {
-                const line = part.trim();
-                if (!line.startsWith('data:')) continue;
-        
-                const data = line.substring(5).trim();
-        
-                if (data === '[DONE]') {
-                    onDone();
-                    return;
-                }
-        
-                try {
-                    const parsed = JSON.parse(data);
-                    if (parsed.token) {
-                        onToken(parsed.token);
-                    } else if (parsed.error) {
-                        onError(new Error(parsed.error));
-                        return;
-                    }
-                } catch (e) {
-                    // Ignore incomplete JSON chunks boundary issues
-                }
-            }
-        }
-        
-        if (xhr.readyState === 4 && !unparsedData.includes('[DONE]')) {
-          // If connection closed without DONE
-          onDone();
-        }
+      if (!response.ok) {
+        const err = await response.text();
+        console.error('Chat API error:', err);
+        throw new Error('Failed to get response from Mazag AI');
       }
-    };
 
-    xhr.onerror = () => {
-      onError(new Error('Cannot reach Mazag server. Is the backend running?'));
-    };
+      const data = await response.json();
+      const fullText = data.response as string;
 
-    xhr.send(JSON.stringify({
-      message: userMessage,
-      session_id: sessionId,
-      user_id: userId ?? undefined,
-    }));
+      // Visually type the finalized string
+      this._simulateStream(fullText, onToken, onDone);
+    } catch (err) {
+      onError(err instanceof Error ? err : new Error('Cannot reach Mazag server.'));
+    }
+  },
+
+  /** Helper to visually stream a final text string */
+  _simulateStream(text: string, onToken: (t: string) => void, onDone: () => void) {
+    const tokens = text.split(/(?<=\s)/); // Split strictly keeping spaces
+    let index = 0;
+    
+    // Simulate reading speed (roughly 30-40ms per word snippet)
+    const interval = setInterval(() => {
+        if (index < tokens.length) {
+            onToken(tokens[index]);
+            index++;
+        } else {
+            clearInterval(interval);
+            onDone();
+        }
+    }, 45); // Feels natural and typewriter-like
   },
 
   /** Reset the conversation session (start fresh) */
