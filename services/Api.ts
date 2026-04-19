@@ -1,83 +1,42 @@
 // services/Api.ts
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://api.mazag.app';
+// Local backend — change this if running on a different port
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:8000';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 30000, // 30s for LLM responses
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor for auth tokens
+// Attach user_id to every request if we have one stored
 apiClient.interceptors.request.use(
   async (config) => {
-    // TODO: Add auth token from AsyncStorage
-    // const token = await AsyncStorage.getItem('authToken');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const userId = await AsyncStorage.getItem('@mazag_user_id');
+    if (userId) {
+      config.headers['X-User-ID'] = userId;
+    }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // Response interceptor for error handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized - redirect to login
-      console.log('Unauthorized access - redirect to login');
+    if (error.response?.status === 404) {
+      console.warn('Resource not found:', error.config?.url);
+    } else if (!error.response) {
+      console.error('Network error — is the backend running on', API_BASE_URL, '?');
     }
     return Promise.reject(error);
   }
 );
 
-export default {
-  // Auth endpoints
-  async login(email: string, password: string) {
-    const response = await apiClient.post('/auth/login', { email, password });
-    return response.data;
-  },
-
-  async register(userData: any) {
-    const response = await apiClient.post('/auth/register', userData);
-    return response.data;
-  },
-
-  // Chat endpoints
-  async sendChatMessage(message: string, conversationId?: string) {
-    const response = await apiClient.post('/chat/message', { 
-      message, 
-      conversationId 
-    });
-    return response.data;
-  },
-
-  // Therapists endpoints
-  async getTherapists(filters?: any) {
-    const response = await apiClient.get('/therapists', { params: filters });
-    return response.data;
-  },
-
-  async bookSession(therapistId: string, datetime: string) {
-    const response = await apiClient.post('/bookings', { 
-      therapistId, 
-      datetime 
-    });
-    return response.data;
-  },
-
-  // Exercises endpoints
-  async getExercises(type?: string) {
-    const response = await apiClient.get('/exercises', { 
-      params: type ? { type } : {} 
-    });
-    return response.data;
-  }
-};
+export { API_BASE_URL };
+export default apiClient;

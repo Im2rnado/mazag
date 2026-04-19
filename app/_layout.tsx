@@ -148,6 +148,14 @@ export default function RootLayout() {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && !isReady) {
+      // Authenticate/register this device with the backend
+      try {
+        const AuthService = require('@/services/AuthService').default;
+        await AuthService.initialize();
+      } catch (err) {
+        console.warn('Auth initialization skipped/failed:', err);
+      }
+      
       await SplashScreen.hideAsync();
       setIsReady(true);
     }

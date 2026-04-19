@@ -43,32 +43,58 @@ export default function Chat() {
     async function handleSend() {
         if (!input.trim() || loading) return;
 
-        const userMsg: Msg = { id: Date.now().toString(), text: input.trim(), fromUser: true, timestamp: Date.now() };
+        const userText = input.trim();
+        const userMsg: Msg = { id: Date.now().toString(), text: userText, fromUser: true, timestamp: Date.now() };
         setMessages((m) => [...m, userMsg]);
         setInput('');
-        setLoading(true);
+        setLoading(true); // Shows typing indicator
 
-        // Scroll to bottom after user sends message
+        const botId = Date.now().toString() + '-r';
+
         setTimeout(() => {
             flashListRef.current?.scrollToEnd({ animated: true });
         }, 100);
 
-        try {
-            // send to ChatbotService
-            const reply = await ChatbotService.sendMessage(input);
-            const botMsg: Msg = { id: Date.now().toString() + '-r', text: reply, fromUser: false, timestamp: Date.now() };
-            setMessages((m) => [...m, botMsg]);
-        } catch (error) {
-            const errorMsg: Msg = {
-                id: Date.now().toString() + '-e',
-                text: 'Sorry, I encountered an error. Please try again.',
-                fromUser: false,
-                timestamp: Date.now()
-            };
-            setMessages((m) => [...m, errorMsg]);
-        } finally {
-            setLoading(false);
-        }
+        // Stream tokens into the message dynamically
+        ChatbotService.streamMessage(
+            userText,
+            (token: string) => {
+                setMessages((m) => {
+                    // Check if bot message exists
+                    const exists = m.some(msg => msg.id === botId);
+                    if (!exists) {
+                        return [...m, { id: botId, text: token, fromUser: false, timestamp: Date.now() }];
+                    }
+                    return m.map((msg) =>
+                        msg.id === botId ? { ...msg, text: msg.text + token } : msg
+                    );
+                });
+                
+                // Once we have a token, typing phase is over, stream is active
+                setLoading(false);
+                
+                // Allow scroll binding a slight delay so flashlist height calculates correctly
+                setTimeout(() => {
+                    flashListRef.current?.scrollToEnd({ animated: false });
+                }, 50);
+            },
+            () => {
+                setLoading(false);
+            },
+            (err: Error) => {
+                setMessages((m) => {
+                    const exists = m.some(msg => msg.id === botId);
+                    if (!exists) {
+                        return [...m, { id: botId, text: 'Sorry, I encountered an error. Please try again.', fromUser: false, timestamp: Date.now() }];
+                    }
+                    return m.map((msg) =>
+                        msg.id === botId ? { ...msg, text: 'Sorry, I encountered an error. Please try again.' } : msg
+                    );
+                });
+                setLoading(false);
+                console.error('Stream error:', err);
+            }
+        );
     }
 
     const handleSuggestionPress = (suggestion: string) => {

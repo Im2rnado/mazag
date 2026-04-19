@@ -25,6 +25,7 @@ let filtersCache: { specializations: string[]; languages: string[]; ageGroups: s
 export default function Therapists() {
     const router = useRouter();
     const [therapists, setTherapists] = useState<Therapist[]>(therapistsCache || []);
+    const [recommended, setRecommended] = useState<any[]>([]);
     const [loading, setLoading] = useState(!therapistsCache);
     const [searchQuery, setSearchQuery] = useState('');
     const [showFilters, setShowFilters] = useState(false);
@@ -80,6 +81,10 @@ export default function Therapists() {
             try {
                 const list = await TherapistService.fetchAll();
                 setTherapists(list as Therapist[]);
+                
+                const recList = await TherapistService.fetchRecommended();
+                // ONLY show recommendations that have a positive match score
+                setRecommended(recList.filter(t => t.matchScore > 0));
 
                 // Cache the data for future visits
                 therapistsCache = list as Therapist[];
@@ -538,6 +543,7 @@ export default function Therapists() {
                         </ScrollView>
                     </Animated.View>
 
+
                     {/* Therapist List */}
                     {filteredTherapists.length === 0 ? (
                         <View className="flex-1 justify-center items-center px-6">
@@ -550,18 +556,49 @@ export default function Therapists() {
                             </Text>
                         </View>
                     ) : (
-                        <FlashList
-                            data={filteredTherapists}
-                            keyExtractor={(t: Therapist) => t.id}
-                            renderItem={({ item }: { item: Therapist }) => (
+                        <ScrollView 
+                            contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 120 }}
+                            showsVerticalScrollIndicator={false}
+                        >
+                            {!searchQuery && Object.values(filters).every(arr => Array.isArray(arr) ? arr.length === 0 : !arr) && recommended.length > 0 && (
+                                <View className="mb-6 pt-2">
+                                    <View className="flex-row items-center mb-4">
+                                        <Ionicons name="sparkles" size={22} color="#F57F17" />
+                                        <Text className="text-xl font-avenir-bold text-textStrong ml-2">
+                                            Highly Recommended for You
+                                        </Text>
+                                    </View>
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-2">
+                                        {recommended.map((item, index) => (
+                                            <View key={item.id} className="mr-5" style={{ width: 320 }}>
+                                                <View className="bg-[#FFF8E1] rounded-2xl px-4 py-2 border border-[#FFE082] mb-[-12px] z-10 self-start ml-4">
+                                                    <Text className="text-xs font-avenir-bold text-[#F57F17]">
+                                                        {(item.matchScore * 100).toFixed(0)}% Match
+                                                    </Text>
+                                                </View>
+                                                <TherapistCard 
+                                                    therapist={item} 
+                                                    onPress={() => handleTherapistPress(item)} 
+                                                />
+                                            </View>
+                                        ))}
+                                    </ScrollView>
+                                    
+                                    <View className="border-t border-glassBorder my-4 opacity-50" />
+                                    <Text className="text-xl font-avenir-bold text-textStrong mb-4">
+                                        Explore All Therapists
+                                    </Text>
+                                </View>
+                            )}
+
+                            {filteredTherapists.map(item => (
                                 <TherapistCard
+                                    key={item.id}
                                     therapist={item}
                                     onPress={() => handleTherapistPress(item)}
                                 />
-                            )}
-                            contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 120 }}
-                            showsVerticalScrollIndicator={false}
-                        />
+                            ))}
+                        </ScrollView>
                     )}
                 </View>
             </SafeAreaView>
