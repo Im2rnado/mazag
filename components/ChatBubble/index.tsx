@@ -1,18 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, Animated } from 'react-native';
 import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import TherapistCard from '../TherapistCard';
 
 export default function ChatBubble({
     text,
     fromUser,
-    timestamp
+    timestamp,
+    therapists
 }: {
     text: string;
     fromUser?: boolean;
     timestamp?: number;
+    therapists?: any[];
 }) {
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(20)).current;
+    const router = useRouter();
 
     useEffect(() => {
         Animated.parallel([
@@ -83,21 +88,36 @@ export default function ChatBubble({
             ) : (
                 // Bot message - Enhanced glass effect
                 <View style={{ maxWidth: '85%' }}>
-                    <View className="px-4 py-3.5 rounded-3xl" style={{
-                        backgroundColor: 'rgba(255,255,255,0.98)',
-                        borderWidth: 1.5,
-                        borderColor: 'rgba(100, 181, 246, 0.3)',
-                        shadowColor: '#64B5F6',
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.12,
-                        shadowRadius: 10,
-                        elevation: 3,
-                        borderBottomLeftRadius: 6,
-                    }}>
-                        <Text className="font-avenir-medium text-textStrong" style={{ fontSize: 15 }}>
-                            {text}
-                        </Text>
-                    </View>
+                    {!!text && (
+                        <View className="px-4 py-3.5 rounded-3xl" style={{
+                            backgroundColor: 'rgba(255,255,255,0.98)',
+                            borderWidth: 1.5,
+                            borderColor: 'rgba(100, 181, 246, 0.3)',
+                            shadowColor: '#64B5F6',
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.12,
+                            shadowRadius: 10,
+                            elevation: 3,
+                            borderBottomLeftRadius: 6,
+                        }}>
+                            <Text className="font-avenir-medium text-textStrong" style={{ fontSize: 15 }}>
+                                {text}
+                            </Text>
+                        </View>
+                    )}
+                    
+                    {therapists && therapists.length > 0 && (
+                        <View className="mt-2" style={{ width: 280 }}>
+                            {therapists.map((t, idx) => (
+                                <View key={t.id || idx} className="mb-2">
+                                    <TherapistCard 
+                                        therapist={t} 
+                                        onPress={() => router.push(`/therapists/${t.id}`)} 
+                                    />
+                                </View>
+                            ))}
+                        </View>
+                    )}
                     {timestamp && (
                         <Text className="text-xs font-avenir-medium mt-1 ml-1" style={{ color: '#90A4AE' }}>
                             {formatTime(timestamp)}

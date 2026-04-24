@@ -80,7 +80,8 @@ const ChatbotService = {
     userMessage: string,
     onToken: (token: string) => void,
     onDone: () => void,
-    onError: (err: Error) => void
+    onError: (err: Error) => void,
+    onTherapists?: (therapists: any[]) => void
   ): Promise<void> {
     // Local crisis check
     if (hasCrisisKeyword(userMessage)) {
@@ -112,6 +113,11 @@ const ChatbotService = {
       }
 
       const data = await response.json();
+      
+      if (data.therapists && data.therapists.length > 0 && onTherapists) {
+          onTherapists(data.therapists);
+      }
+      
       const fullText = data.response as string;
 
       // Visually type the finalized string

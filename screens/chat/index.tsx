@@ -10,7 +10,7 @@ import ChatbotService from '@/services/ChatbotService';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AnimatedChromeOrb from '@/components/AnimatedChromeOrb';
 
-type Msg = { id: string; text: string; fromUser?: boolean; timestamp?: number };
+type Msg = { id: string; text: string; fromUser?: boolean; timestamp?: number; therapists?: any[] };
 
 export default function Chat() {
     const router = useRouter();
@@ -98,6 +98,17 @@ export default function Chat() {
                 });
                 setLoading(false);
                 console.error('Stream error:', err);
+            },
+            (therapists: any[]) => {
+                setMessages((m) => {
+                    const exists = m.some(msg => msg.id === botId);
+                    if (!exists) {
+                        return [...m, { id: botId, text: '', therapists, fromUser: false, timestamp: Date.now() }];
+                    }
+                    return m.map((msg) =>
+                        msg.id === botId ? { ...msg, therapists } : msg
+                    );
+                });
             }
         );
     }
@@ -188,6 +199,7 @@ export default function Chat() {
                                     text={item.text}
                                     fromUser={item.fromUser}
                                     timestamp={item.timestamp}
+                                    therapists={item.therapists}
                                 />
                             )}
                             contentContainerStyle={{ paddingBottom: 16, paddingTop: 8 }}
