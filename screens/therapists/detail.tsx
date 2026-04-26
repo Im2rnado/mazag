@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, Modal, Animated, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, ScrollView, Pressable, Modal, Animated, TouchableOpacity, Platform, Image } from 'react-native';
 import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -183,19 +183,27 @@ export default function TherapistDetail() {
                             shadowRadius: 16,
                             elevation: 8,
                         }}>
-                            {/* Avatar Placeholder */}
+                            {/* Avatar */}
                             <View className="items-center mb-4">
-                                <View className="w-24 h-24 rounded-full items-center justify-center" style={{
-                                    backgroundColor: therapist.gender === 'Female' ? '#F8BBD0' : '#BBDEFB',
-                                    borderWidth: 3,
-                                    borderColor: therapist.gender === 'Female' ? '#EC407A' : '#42A5F5',
-                                }}>
-                                    <Ionicons
-                                        name="person"
-                                        size={48}
-                                        color={therapist.gender === 'Female' ? '#EC407A' : '#42A5F5'}
+                                {therapist.image ? (
+                                    <Image 
+                                        source={{ uri: therapist.image }} 
+                                        className="w-24 h-24 rounded-full" 
+                                        style={{ borderWidth: 3, borderColor: '#E3F2FD' }}
                                     />
-                                </View>
+                                ) : (
+                                    <View className="w-24 h-24 rounded-full items-center justify-center" style={{
+                                        backgroundColor: therapist.gender === 'Female' ? '#F8BBD0' : '#BBDEFB',
+                                        borderWidth: 3,
+                                        borderColor: therapist.gender === 'Female' ? '#EC407A' : '#42A5F5',
+                                    }}>
+                                        <Ionicons
+                                            name="person"
+                                            size={48}
+                                            color={therapist.gender === 'Female' ? '#EC407A' : '#42A5F5'}
+                                        />
+                                    </View>
+                                )}
                             </View>
 
                             {/* Name & Title */}
@@ -205,6 +213,14 @@ export default function TherapistDetail() {
                             <Text className="text-subheading font-avenir-semibold text-primaryBlue text-center mt-1">
                                 {therapist.specialization}
                             </Text>
+                            {therapist.location && (
+                                <View className="flex-row items-center justify-center mt-1">
+                                    <Ionicons name="location" size={16} color="#64B5F6" />
+                                    <Text className="text-subheading font-avenir-medium text-textLight ml-1">
+                                        {therapist.location}
+                                    </Text>
+                                </View>
+                            )}
 
                             {/* Rating & Experience */}
                             <View className="flex-row items-center justify-center gap-4 mt-4">

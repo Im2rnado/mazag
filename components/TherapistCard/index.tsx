@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Therapist } from '@/types';
 import GlassCard from '@/components/GlassCard';
@@ -28,17 +28,46 @@ export default function TherapistCard({ therapist, onPress }: Props) {
                 shadowRadius: 12,
                 elevation: 6,
             }}>
-                {/* Header: Name & Rating */}
+                {/* Header: Avatar, Name & Rating */}
                 <View className="flex-row items-start justify-between mb-3">
-                    <View className="flex-1 mr-3">
-                        <Text className="text-xl font-avenir-bold text-textStrong">
-                            {fullName}
-                        </Text>
-                        <View className="flex-row items-center mt-2">
-                            <View className="bg-iceBlue rounded-lg px-3 py-1">
-                                <Text className="text-sm font-avenir-bold text-primaryBlue">
-                                    {therapist.specialization}
-                                </Text>
+                    <View className="flex-row flex-1 mr-3">
+                        {therapist.image ? (
+                            <Image 
+                                source={{ uri: therapist.image }} 
+                                className="w-14 h-14 rounded-full mr-3" 
+                                style={{ borderWidth: 2, borderColor: '#E3F2FD' }}
+                            />
+                        ) : (
+                            <View className="w-14 h-14 rounded-full items-center justify-center mr-3" style={{
+                                backgroundColor: therapist.gender === 'Female' ? '#F8BBD0' : '#BBDEFB',
+                                borderWidth: 2,
+                                borderColor: therapist.gender === 'Female' ? '#EC407A' : '#42A5F5',
+                            }}>
+                                <Ionicons
+                                    name="person"
+                                    size={28}
+                                    color={therapist.gender === 'Female' ? '#EC407A' : '#42A5F5'}
+                                />
+                            </View>
+                        )}
+                        <View className="flex-1">
+                            <Text className="text-xl font-avenir-bold text-textStrong">
+                                {fullName}
+                            </Text>
+                            <View className="flex-row items-center mt-2 flex-wrap gap-2">
+                                <View className="bg-iceBlue rounded-lg px-3 py-1">
+                                    <Text className="text-sm font-avenir-bold text-primaryBlue">
+                                        {therapist.specialization}
+                                    </Text>
+                                </View>
+                                {therapist.location && (
+                                    <View className="flex-row items-center bg-iceBlue rounded-lg px-2 py-1">
+                                        <Ionicons name="location" size={14} color="#2196F3" />
+                                        <Text className="text-xs font-avenir-medium text-primaryBlue ml-1">
+                                            {therapist.location}
+                                        </Text>
+                                    </View>
+                                )}
                             </View>
                         </View>
                     </View>

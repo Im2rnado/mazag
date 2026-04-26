@@ -22,6 +22,7 @@ export type Therapist = {
   approach?: string; // Therapy approach description
   availableSlots?: string[]; // ISO datetime strings
   image?: string; // Avatar/photo URL
+  location?: string; // e.g., "Dokki", "Maadi, Cairo"
 };
 
 export type Message = {

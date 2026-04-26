@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Canvas, Group, Circle, SweepGradient, vec, Blur, RadialGradient } from '@shopify/react-native-skia';
+import { Canvas, Group, Circle, SweepGradient, vec, Blur, RadialGradient, Paint } from '@shopify/react-native-skia';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSharedValue, withRepeat, withTiming, Easing, useDerivedValue } from 'react-native-reanimated';
 
 type SiriOrbColors = {
     bg?: string;
@@ -23,8 +24,8 @@ export default function AnimatedChromeOrb({
     colors = {},
     isActive = false,
 }: Props) {
-    // Single animation angle that drives all gradients (like CSS --angle)
-    const [angle, setAngle] = useState(0);
+    // Shared value for animation progress (0 to 1) offloaded to UI thread
+    const progress = useSharedValue(0);
 
     // Default color scheme - vibrant blues
     const defaultColors = {
@@ -37,26 +38,28 @@ export default function AnimatedChromeOrb({
     const orbColors = { ...defaultColors, ...colors };
 
     useEffect(() => {
-        const startTime = Date.now();
-
-        const animate = () => {
-            const elapsed = (Date.now() - startTime) / 1000; // in seconds
-            const newAngle = (elapsed / animationDuration) * 360;
-            setAngle(newAngle % 360);
-        };
-
-        const interval = setInterval(animate, 16); // ~60fps
-        return () => clearInterval(interval);
+        // Run a continuous linear animation from 0 to 1 natively
+        progress.value = 0;
+        progress.value = withRepeat(
+            withTiming(1, { duration: animationDuration * 1000, easing: Easing.linear }),
+            -1, // infinite
+            false // no reverse
+        );
     }, [animationDuration]);
 
     const center = size / 2;
     const radius = size / 2;
 
-    // Responsive calculations based on size (matching SmoothUI)
+    // Responsive calculations based on size
     const blurAmount = size < 50 ? Math.max(size * 0.15, 2) : Math.max(size * 0.15, 8);
 
-    // Convert angle to radians for Skia
-    const angleRad = (angle * Math.PI) / 180;
+    // Derived values for each gradient's rotation on the UI thread
+    const transform1 = useDerivedValue(() => [{ rotate: progress.value * Math.PI * 4 }]); // angleRad * 2
+    const transform2 = useDerivedValue(() => [{ rotate: progress.value * Math.PI * 4 }]); // angleRad * 2
+    const transform3 = useDerivedValue(() => [{ rotate: progress.value * Math.PI * -6 }]); // angleRad * -3
+    const transform4 = useDerivedValue(() => [{ rotate: progress.value * Math.PI * 4 }]); // angleRad * 2
+    const transform5 = useDerivedValue(() => [{ rotate: progress.value * Math.PI * 2 }]); // angleRad * 1
+    const transform6 = useDerivedValue(() => [{ rotate: progress.value * Math.PI * -4 }]); // angleRad * -2
 
     return (
         <View
@@ -80,113 +83,109 @@ export default function AnimatedChromeOrb({
                     {/* Base background */}
                     <Circle cx={center} cy={center} r={radius} color={orbColors.bg} />
 
-                    {/* Layer of 6 conic gradients - matching SmoothUI structure */}
-                    {/* Gradient 1: at 25% 70%, rotation * 2 */}
-                    <Group transform={[{ rotate: angleRad * 2 }]} origin={vec(size * 0.25, size * 0.70)}>
-                        <Circle cx={size * 0.25} cy={size * 0.70} r={radius * 2} opacity={0.9}>
-                            <SweepGradient
-                                c={vec(size * 0.25, size * 0.70)}
-                                colors={[
-                                    orbColors.c3,
-                                    orbColors.c3,
-                                    'transparent',
-                                    'transparent',
-                                    orbColors.c3,
-                                    orbColors.c3,
-                                ]}
-                            />
-                            <Blur blur={blurAmount * 0.6} />
-                        </Circle>
-                    </Group>
+                    {/* Layer of 6 conic gradients grouped with a single Blur for massive GPU optimization */}
+                    <Group layer={<Paint><Blur blur={blurAmount * 0.6} /></Paint>}>
+                        {/* Gradient 1: at 25% 70%, rotation * 2 */}
+                        <Group transform={transform1} origin={vec(size * 0.25, size * 0.70)}>
+                            <Circle cx={size * 0.25} cy={size * 0.70} r={radius * 2} opacity={0.9}>
+                                <SweepGradient
+                                    c={vec(size * 0.25, size * 0.70)}
+                                    colors={[
+                                        orbColors.c3,
+                                        orbColors.c3,
+                                        'transparent',
+                                        'transparent',
+                                        orbColors.c3,
+                                        orbColors.c3,
+                                    ]}
+                                />
+                            </Circle>
+                        </Group>
 
-                    {/* Gradient 2: at 45% 75%, rotation * 2 */}
-                    <Group transform={[{ rotate: angleRad * 2 }]} origin={vec(size * 0.45, size * 0.75)}>
-                        <Circle cx={size * 0.45} cy={size * 0.75} r={radius * 2} opacity={1.0}>
-                            <SweepGradient
-                                c={vec(size * 0.45, size * 0.75)}
-                                colors={[
-                                    orbColors.c3,
-                                    orbColors.c2,
-                                    'transparent',
-                                    orbColors.c2,
-                                    orbColors.c3,
-                                ]}
-                            />
-                            <Blur blur={blurAmount * 0.6} />
-                        </Circle>
-                    </Group>
+                        {/* Gradient 2: at 45% 75%, rotation * 2 */}
+                        <Group transform={transform2} origin={vec(size * 0.45, size * 0.75)}>
+                            <Circle cx={size * 0.45} cy={size * 0.75} r={radius * 2} opacity={1.0}>
+                                <SweepGradient
+                                    c={vec(size * 0.45, size * 0.75)}
+                                    colors={[
+                                        orbColors.c3,
+                                        orbColors.c2,
+                                        'transparent',
+                                        orbColors.c2,
+                                        orbColors.c3,
+                                    ]}
+                                />
+                            </Circle>
+                        </Group>
 
-                    {/* Gradient 3: at 80% 20%, rotation * -3 */}
-                    <Group transform={[{ rotate: angleRad * -3 }]} origin={vec(size * 0.80, size * 0.20)}>
-                        <Circle cx={size * 0.80} cy={size * 0.20} r={radius * 2} opacity={0.95}>
-                            <SweepGradient
-                                c={vec(size * 0.80, size * 0.20)}
-                                colors={[
-                                    orbColors.c3,
-                                    orbColors.c1,
-                                    'transparent',
-                                    orbColors.c1,
-                                    orbColors.c3,
-                                ]}
-                            />
-                            <Blur blur={blurAmount * 0.6} />
-                        </Circle>
-                    </Group>
+                        {/* Gradient 3: at 80% 20%, rotation * -3 */}
+                        <Group transform={transform3} origin={vec(size * 0.80, size * 0.20)}>
+                            <Circle cx={size * 0.80} cy={size * 0.20} r={radius * 2} opacity={0.95}>
+                                <SweepGradient
+                                    c={vec(size * 0.80, size * 0.20)}
+                                    colors={[
+                                        orbColors.c3,
+                                        orbColors.c1,
+                                        'transparent',
+                                        orbColors.c1,
+                                        orbColors.c3,
+                                    ]}
+                                />
+                            </Circle>
+                        </Group>
 
-                    {/* Gradient 4: at 15% 5%, rotation * 2 */}
-                    <Group transform={[{ rotate: angleRad * 2 }]} origin={vec(size * 0.15, size * 0.05)}>
-                        <Circle cx={size * 0.15} cy={size * 0.05} r={radius * 2} opacity={0.9}>
-                            <SweepGradient
-                                c={vec(size * 0.15, size * 0.05)}
-                                colors={[
-                                    orbColors.c3,
-                                    orbColors.c2,
-                                    'transparent',
-                                    'transparent',
-                                    'transparent',
-                                    orbColors.c2,
-                                    orbColors.c3,
-                                ]}
-                            />
-                            <Blur blur={blurAmount * 0.6} />
-                        </Circle>
-                    </Group>
+                        {/* Gradient 4: at 15% 5%, rotation * 2 */}
+                        <Group transform={transform4} origin={vec(size * 0.15, size * 0.05)}>
+                            <Circle cx={size * 0.15} cy={size * 0.05} r={radius * 2} opacity={0.9}>
+                                <SweepGradient
+                                    c={vec(size * 0.15, size * 0.05)}
+                                    colors={[
+                                        orbColors.c3,
+                                        orbColors.c2,
+                                        'transparent',
+                                        'transparent',
+                                        'transparent',
+                                        orbColors.c2,
+                                        orbColors.c3,
+                                    ]}
+                                />
+                            </Circle>
+                        </Group>
 
-                    {/* Gradient 5: at 20% 80%, rotation * 1 */}
-                    <Group transform={[{ rotate: angleRad * 1 }]} origin={vec(size * 0.20, size * 0.80)}>
-                        <Circle cx={size * 0.20} cy={size * 0.80} r={radius * 2} opacity={0.9}>
-                            <SweepGradient
-                                c={vec(size * 0.20, size * 0.80)}
-                                colors={[
-                                    orbColors.c3,
-                                    orbColors.c1,
-                                    'transparent',
-                                    'transparent',
-                                    orbColors.c1,
-                                    orbColors.c3,
-                                ]}
-                            />
-                            <Blur blur={blurAmount * 0.6} />
-                        </Circle>
-                    </Group>
+                        {/* Gradient 5: at 20% 80%, rotation * 1 */}
+                        <Group transform={transform5} origin={vec(size * 0.20, size * 0.80)}>
+                            <Circle cx={size * 0.20} cy={size * 0.80} r={radius * 2} opacity={0.9}>
+                                <SweepGradient
+                                    c={vec(size * 0.20, size * 0.80)}
+                                    colors={[
+                                        orbColors.c3,
+                                        orbColors.c1,
+                                        'transparent',
+                                        'transparent',
+                                        orbColors.c1,
+                                        orbColors.c3,
+                                    ]}
+                                />
+                            </Circle>
+                        </Group>
 
-                    {/* Gradient 6: at 85% 10%, rotation * -2 */}
-                    <Group transform={[{ rotate: angleRad * -2 }]} origin={vec(size * 0.85, size * 0.10)}>
-                        <Circle cx={size * 0.85} cy={size * 0.10} r={radius * 2} opacity={1.0}>
-                            <SweepGradient
-                                c={vec(size * 0.85, size * 0.10)}
-                                colors={[
-                                    orbColors.c3,
-                                    orbColors.c3,
-                                    'transparent',
-                                    orbColors.c3,
-                                    orbColors.c3,
-                                    'transparent',
-                                    orbColors.c3,
-                                ]}
-                            />
-                            <Blur blur={blurAmount * 0.6} />
-                        </Circle>
+                        {/* Gradient 6: at 85% 10%, rotation * -2 */}
+                        <Group transform={transform6} origin={vec(size * 0.85, size * 0.10)}>
+                            <Circle cx={size * 0.85} cy={size * 0.10} r={radius * 2} opacity={1.0}>
+                                <SweepGradient
+                                    c={vec(size * 0.85, size * 0.10)}
+                                    colors={[
+                                        orbColors.c3,
+                                        orbColors.c3,
+                                        'transparent',
+                                        orbColors.c3,
+                                        orbColors.c3,
+                                        'transparent',
+                                        orbColors.c3,
+                                    ]}
+                                />
+                            </Circle>
+                        </Group>
                     </Group>
 
                     {/* 3D Sphere - Top-left highlight (light source) */}
