@@ -34,15 +34,15 @@ export default {
     specialization?: string;
     search?: string;
   }): Promise<Therapist[]> {
-    try {
-      const response = await apiClient.get('/therapists', { params: filters });
-      return (response.data as any[]).map(normalizeTherapist);
-    } catch (error) {
-      console.error('Failed to fetch therapists from API:', error);
-      // Fallback to local JSON if backend unreachable
+    // try {
+    //   const response = await apiClient.get('/therapists', { params: filters });
+    //   return (response.data as any[]).map(normalizeTherapist);
+    // } catch (error) {
+    //   console.error('Failed to fetch therapists from API:', error);
+    //   // Fallback to local JSON if backend unreachable
       const fallback = require('@/assets/data/therapists.json');
       return fallback as Therapist[];
-    }
+    // }
   },
 
   async fetchRecommended(): Promise<Array<Therapist & { matchScore: number; matchReasons: string[] }>> {

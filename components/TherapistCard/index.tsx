@@ -55,15 +55,15 @@ export default function TherapistCard({ therapist, onPress }: Props) {
                                 {fullName}
                             </Text>
                             <View className="flex-row items-center mt-2 flex-wrap gap-2">
-                                <View className="bg-iceBlue rounded-lg px-3 py-1">
-                                    <Text className="text-sm font-avenir-bold text-primaryBlue">
+                                <View className="bg-iceBlue rounded-lg px-3 py-1" style={{ flexShrink: 1 }}>
+                                    <Text className="text-sm font-avenir-bold text-primaryBlue" numberOfLines={1} ellipsizeMode="tail">
                                         {therapist.specialization}
                                     </Text>
                                 </View>
                                 {therapist.location && (
-                                    <View className="flex-row items-center bg-iceBlue rounded-lg px-2 py-1">
+                                    <View className="flex-row items-center bg-iceBlue rounded-lg px-2 py-1" style={{ flexShrink: 1 }}>
                                         <Ionicons name="location" size={14} color="#2196F3" />
-                                        <Text className="text-xs font-avenir-medium text-primaryBlue ml-1">
+                                        <Text className="text-xs font-avenir-medium text-primaryBlue ml-1" numberOfLines={1} ellipsizeMode="tail">
                                             {therapist.location}
                                         </Text>
                                     </View>

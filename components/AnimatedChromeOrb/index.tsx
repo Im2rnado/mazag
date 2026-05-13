@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Canvas, Group, Circle, SweepGradient, vec, Blur, RadialGradient, Paint } from '@shopify/react-native-skia';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useSharedValue, withRepeat, withTiming, Easing, useDerivedValue } from 'react-native-reanimated';
+import { useSharedValue, withRepeat, withTiming, Easing, useDerivedValue, cancelAnimation } from 'react-native-reanimated';
 
 type SiriOrbColors = {
     bg?: string;
@@ -45,7 +45,10 @@ export default function AnimatedChromeOrb({
             -1, // infinite
             false // no reverse
         );
-    }, [animationDuration]);
+        return () => {
+            cancelAnimation(progress);
+        };
+    }, [animationDuration, progress]);
 
     const center = size / 2;
     const radius = size / 2;

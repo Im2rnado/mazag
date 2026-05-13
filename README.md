@@ -149,7 +149,7 @@ The ChatbotService is designed for production AI integration:
 
 ### Production Integration Points
 1. **Safety Layer**: Keyword detection + lightweight classifier
-2. **RAG Pipeline**: Vector database (Pinecone/Weaviate) for context retrieval
+2. **RAG Pipeline**: Vector database (FAISS) for context retrieval
 3. **LLM Integration**: GPT-4/Gemini API calls with structured prompts
 4. **Guardrails**: Post-processing filters for medical advice detection
 5. **Logging**: Conversation logging for moderation and improvement
@@ -158,8 +158,6 @@ The ChatbotService is designed for production AI integration:
 ```env
 # Add these to your .env file
 OPENAI_API_KEY=your_openai_key
-PINECONE_API_KEY=your_pinecone_key
-PINECONE_INDEX_NAME=mental-health-kb
 ```
 
 ## 📊 Data Management

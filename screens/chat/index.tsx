@@ -27,14 +27,14 @@ export default function Chat() {
         ChatbotService.resetSession();
     }, []);
 
-    // Auto-scroll to bottom when messages change
+    // Auto-scroll to bottom when new messages are added
     useEffect(() => {
         if (messages.length > 0) {
             setTimeout(() => {
                 flashListRef.current?.scrollToEnd({ animated: true });
             }, 100);
         }
-    }, [messages]);
+    }, [messages.length]);
 
     // Fade in animation for messages
     useEffect(() => {
@@ -77,11 +77,6 @@ export default function Chat() {
                 
                 // Once we have a token, typing phase is over, stream is active
                 setLoading(false);
-                
-                // Allow scroll binding a slight delay so flashlist height calculates correctly
-                setTimeout(() => {
-                    flashListRef.current?.scrollToEnd({ animated: false });
-                }, 50);
             },
             () => {
                 setLoading(false);
@@ -204,7 +199,7 @@ export default function Chat() {
                             )}
                             contentContainerStyle={{ paddingBottom: 16, paddingTop: 8 }}
                             showsVerticalScrollIndicator={false}
-                            onContentSizeChange={() => flashListRef.current?.scrollToEnd({ animated: true })}
+                            onContentSizeChange={() => flashListRef.current?.scrollToEnd({ animated: false })}
                         />
 
                         {/* Typing Indicator */}

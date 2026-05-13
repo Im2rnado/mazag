@@ -46,7 +46,7 @@ export default function CompleteScreen() {
     }));
 
     const handleStart = () => {
-        router.replace('/');
+        router.replace('/auth/signup');
     };
 
     return (
