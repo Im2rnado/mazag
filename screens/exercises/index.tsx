@@ -3,6 +3,7 @@ import { View, Text, TextInput, Pressable, Animated, TouchableOpacity, FlatList 
 import { FlashList } from '@shopify/flash-list';
 import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import ExerciseCard from '@/components/ExerciseCard';
 import { Exercise } from '@/types';
 import exercisesData from '@/assets/data/exercises.json';
@@ -18,6 +19,7 @@ const CATEGORIES = [
 ];
 
 export default function Exercises() {
+  const router = useRouter();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,8 +54,7 @@ export default function Exercises() {
   }, [searchQuery, selectedCategory, exercises]);
 
   const handleExercisePress = (exercise: Exercise) => {
-    // TODO: Navigate to exercise detail or start exercise
-    console.log('Starting exercise:', exercise.title);
+    router.push(`/exercises/${exercise.id}` as any);
   };
 
   return (
@@ -159,6 +160,8 @@ export default function Exercises() {
           {filteredExercises.length > 0 ? (
             <FlashList
               data={filteredExercises}
+              // @ts-ignore
+              estimatedItemSize={120}
               keyExtractor={(e: Exercise) => e.id}
               renderItem={({ item }: { item: Exercise }) => (
                 <ExerciseCard

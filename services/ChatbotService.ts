@@ -118,7 +118,10 @@ const ChatbotService = {
           onTherapists(data.therapists);
       }
       
-      const fullText = data.response as string;
+      let fullText = data.response as string || '';
+      
+      // Clean up backend leaked tool call blocks
+      fullText = fullText.replace(/<tool_call>[\s\S]*?(<\/tool_call>|$)/gi, '').trim();
 
       // Visually type the finalized string
       this._simulateStream(fullText, onToken, onDone);

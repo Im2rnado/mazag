@@ -559,6 +559,7 @@ export default function Therapists() {
                         <View style={{ flex: 1, paddingHorizontal: 24 }}>
                             <FlashList
                                 data={filteredTherapists}
+                                // @ts-ignore
                                 estimatedItemSize={200}
                                 showsVerticalScrollIndicator={false}
                                 contentContainerStyle={{ paddingBottom: 120 }}

@@ -156,6 +156,7 @@ export default function ExerciseCard({ exercise, onPress }: Props) {
                                 style={{ borderRadius: 16 }}
                             >
                                 <Pressable
+                                    onPress={onPress}
                                     className="px-6 py-2.5 flex-row items-center"
                                     style={({ pressed }) => ({
                                         opacity: pressed ? 0.8 : 1,

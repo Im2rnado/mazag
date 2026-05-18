@@ -4,9 +4,12 @@ import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { BlurView } from 'expo-blur';
+import { useFocusEffect } from 'expo-router';
 import OnboardingService from '@/services/OnboardingService';
+import StatsService, { UserStats } from '@/services/StatsService';
 import { OnboardingResponse } from '@/types/onboarding';
 import { getPersonalizedRecommendations, getPersonalizedQuickActions } from '@/utils/personalization';
+import { useCallback } from 'react';
 
 type Mood = 'happy' | 'joyful' | 'neutral' | 'sad' | 'angry' | null;
 
@@ -18,6 +21,14 @@ export default function Home() {
     const [onboardingData, setOnboardingData] = useState<OnboardingResponse | null>(null);
     const [personalizedGreeting, setPersonalizedGreeting] = useState('');
     const [supportMessage, setSupportMessage] = useState('');
+    const [stats, setStats] = useState<UserStats>({
+        weeklyMoodTrend: 'neutral',
+        journalingStreak: 0,
+        exercisesCompleted: 0,
+        totalConversations: 0,
+        messagesLeftThisMonth: '∞',
+        lastJournalDate: null
+    });
 
     useEffect(() => {
         const hour = new Date().getHours();
@@ -51,6 +62,16 @@ export default function Home() {
         checkAndLoadOnboarding();
     }, []);
 
+    useFocusEffect(
+        useCallback(() => {
+            async function loadStats() {
+                const userStats = await StatsService.getStats();
+                setStats(userStats);
+            }
+            loadStats();
+        }, [])
+    );
+
     const moods = [
         { id: 'happy' as Mood, label: 'Happy', bgClass: 'moodHappy', icon: 'happy' },
         { id: 'joyful' as Mood, label: 'Joyful', bgClass: 'moodJoyful', icon: 'sunny' },
@@ -77,15 +98,6 @@ export default function Home() {
     };
 
     const quickActions = getQuickActions();
-
-    // Mock stats - replace with real data later
-    const stats = {
-        weeklyMoodTrend: 'positive',
-        journalingStreak: 5,
-        exercisesCompleted: 12,
-        totalConversations: 24,
-        messagesLeftThisMonth: 15,
-    };
 
     // Get recommendation based on mood and personalization
     const getRecommendation = () => {
@@ -369,7 +381,7 @@ export default function Home() {
                         {/* Weekly Mood Card */}
                         <Pressable
                             className="mb-3"
-                            onPress={() => router.push('/tracker')}
+                            onPress={() => router.push('/tracker' as any)}
                             style={({ pressed }) => ({
                                 opacity: pressed ? 0.8 : 1,
                             })}
@@ -418,7 +430,7 @@ export default function Home() {
                         {/* Journaling Streak Card */}
                         <Pressable
                             className="mb-3"
-                            onPress={() => router.push('/journal')}
+                            onPress={() => router.push('/journal' as any)}
                             style={({ pressed }) => ({
                                 opacity: pressed ? 0.8 : 1,
                             })}
@@ -603,7 +615,7 @@ export default function Home() {
                                     <View className="flex-row items-center mb-2" style={{ backgroundColor: 'rgba(255,255,255,0.7)', borderRadius: 12, paddingVertical: 8, paddingHorizontal: 10 }}>
                                         <Ionicons name="chatbubble-ellipses" size={18} color="#1976D2" style={{ marginRight: 8 }} />
                                         <Text className="text-sm font-avenir-bold text-textStrong">
-                                            {stats.messagesLeftThisMonth} remaining this month
+                                            ∞ remaining this month
                                         </Text>
                                     </View>
 
